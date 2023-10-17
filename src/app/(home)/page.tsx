@@ -59,7 +59,7 @@ export default function MusicPage() {
                 src={productCategories[0].cover}
                 priority
                 className='rounded-md'
-                alt='Next.js Conf image'
+                alt='Image'
                 fill
               />
             </div>
