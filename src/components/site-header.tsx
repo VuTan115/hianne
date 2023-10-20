@@ -1,47 +1,22 @@
-import Link from 'next/link';
-
-import { siteConfig } from '@/config/site';
-import { cn } from '@/lib/utils';
-import { Icons } from '@/components/icons';
+import { Cart } from '@/components/cart';
 import { MainNav } from '@/components/main-nav';
 import { MobileNav } from '@/components/mobile-nav';
-import { ModeToggle } from './mode-toggle';
+import { Notification } from '@/components/notification';
 import { CommandMenu } from './command-menu';
 
 export function SiteHeader() {
   return (
-    <header className='supports-backdrop-blur:bg-background/60 sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur'>
-      <div className='container flex h-14 items-center'>
-        <MainNav />
-        <MobileNav />
-        <div className='flex flex-1 items-center justify-between space-x-2 md:justify-end'>
-          <div className='w-full flex-1 md:w-auto md:flex-none'>
-            <CommandMenu />
-          </div>
-          <nav className='flex items-center'>
-            <Link
-              href={siteConfig.links.facebook}
-              target='_blank'
-              rel='noreferrer'
-            >
-              <div className={cn('w-9 px-0')}>
-                <Icons.gitHub className='h-4 w-4' />
-                <span className='sr-only'>GitHub</span>
-              </div>
-            </Link>
-            <Link
-              href={siteConfig.links.facebook}
-              target='_blank'
-              rel='noreferrer'
-            >
-              <div className={cn('w-9 px-0')}>
-                <Icons.twitter className='h-4 w-4 fill-current' />
-                <span className='sr-only'>Twitter</span>
-              </div>
-            </Link>
-            <ModeToggle />
-          </nav>
+    <header className='supports-backdrop-blur:bg-background/60 w-full bg-background/95 backdrop-blur flex h-[var(--nav-h)] items-center px-3 md:px-10 z-10'>
+      <MainNav />
+      <MobileNav />
+      <div className='flex flex-1 items-center justify-between space-x-2 md:justify-end'>
+        <div className='w-full flex-1 md:w-auto md:flex-none'>
+          {/* <CommandMenu /> */}
         </div>
+        <nav className='flex items-center'>
+          <Notification />
+          <Cart />
+        </nav>
       </div>
     </header>
   );

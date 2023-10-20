@@ -4,7 +4,14 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --nav-h:76px;
+
+
+    --background: #faeee7;
+    --headline:#33272a;
+    --paragraph:#594a4e;
+    --button:#ff8ba7;
+    --button-text:#33272a;
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
