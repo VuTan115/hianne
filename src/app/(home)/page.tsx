@@ -1,98 +1,118 @@
-import { ScrollArea, ScrollBar } from '@//components/ui/scroll-area';
-import { Separator } from '@//components/ui/separator';
-
 import { SiteHeader } from '@/components/site-header';
-import { cn } from '@/lib/utils';
-import Image from 'next/image';
-import { AlbumArtwork } from './components/album-artwork';
+import Categories from './components/categories';
 import Hero from './components/hero';
-import { listenNowAlbums, productCategories } from './data/albums';
-
+import Products from './components/products';
+const products = [
+  {
+    id: 1,
+    name: 'Basic Tee 8-Pack',
+    href: '#',
+    price: '$256',
+    description:
+      'Get the full lineup of our Basic Tees. Have a fresh shirt all week, and an extra for laundry day.',
+    options: '8 colors',
+    imageSrc:
+      'https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-01.jpg',
+    imageAlt:
+      'Eight shirts arranged on table in black, olive, grey, blue, white, red, mustard, and green.',
+  },
+  {
+    id: 2,
+    name: 'Basic Tee',
+    href: '#',
+    price: '$32',
+    description:
+      'Look like a visionary CEO and wear the same black t-shirt every day.',
+    options: 'Black',
+    imageSrc:
+      'https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-02.jpg',
+    imageAlt: 'Front of plain black t-shirt.',
+  },
+  {
+    id: 2,
+    name: 'Basic Tee',
+    href: '#',
+    price: '$32',
+    description:
+      'Look like a visionary CEO and wear the same black t-shirt every day.',
+    options: 'Black',
+    imageSrc:
+      'https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-02.jpg',
+    imageAlt: 'Front of plain black t-shirt.',
+  },
+  {
+    id: 2,
+    name: 'Basic Tee',
+    href: '#',
+    price: '$32',
+    description:
+      'Look like a visionary CEO and wear the same black t-shirt every day.',
+    options: 'Black',
+    imageSrc:
+      'https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-02.jpg',
+    imageAlt: 'Front of plain black t-shirt.',
+  },
+  {
+    id: 2,
+    name: 'Basic Tee',
+    href: '#',
+    price: '$32',
+    description:
+      'Look like a visionary CEO and wear the same black t-shirt every day.',
+    options: 'Black',
+    imageSrc:
+      'https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-02.jpg',
+    imageAlt: 'Front of plain black t-shirt.',
+  },
+  // More products...
+];
 export default function Home() {
   return (
     <>
       <SiteHeader />
       <Hero />
+      <Categories />
+      <Products title='Các sản phẩm có sẵn' products={[]} />
+      <Products title='Trending' products={[]} />
+      <Products title='Hàng order' products={[]} />
+      <Products title='Hàng khuyến mãi' products={[]} />
 
-      <div className='bg-background block container'>
-        <div className='grid lg:grid-cols-5'>
-          {/* <Sidebar playlists={playlists} className='hidden lg:block' /> */}
-          <div className='w-full col-span-full rounded-sm overflow-hidden'>
-            <div className='h-full px-4 py-6 lg:px-8'>
-              <div className='border-none p-0 outline-none'>
-                <div className='mt-6 space-y-1'>
-                  <h2 className='text-2xl font-semibold tracking-tight'>
-                    Danh mục sản phẩm
-                  </h2>
-                  <p className='text-sm text-muted-foreground'>
-                    Your personal playlists. Updated daily.
-                  </p>
+      <div className='bg-white'>
+        <div className='mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8'>
+          <h2 className='sr-only'>Products</h2>
+
+          <div className='grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-3 lg:gap-x-8'>
+            {products.map((product) => (
+              <div
+                key={product.id}
+                className='group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white'
+              >
+                <div className='aspect-h-4 aspect-w-3 bg-gray-200 sm:aspect-none group-hover:opacity-75 sm:h-96'>
+                  <img
+                    src={product.imageSrc}
+                    alt={product.imageAlt}
+                    className='h-full w-full object-cover object-center sm:h-full sm:w-full'
+                  />
                 </div>
-                <Separator className='my-4' />
-                <div className='relative'>
-                  <ScrollArea>
-                    <div className='flex space-x-4 pb-4'>
-                      {productCategories.map((album) => (
-                        <div
-                          key={album.name}
-                          className='w-[100px] cursor-pointer space-y-3'
-                        >
-                          <div className='overflow-hidden rounded-full h-auto'>
-                            <Image
-                              src={album.cover}
-                              alt={album.name}
-                              width={100}
-                              height={100}
-                              className={cn(
-                                'h-auto w-auto object-cover transition-all scale-150 hover:scale-[1.6]',
-                                'aspect-square'
-                              )}
-                            />
-                          </div>
-                          <div className='space-y-1 text-sm'>
-                            <h3 className='font-medium leading-none text-center'>
-                              {album.name}
-                            </h3>
-                            <p className='text-xs text-muted-foreground'>
-                              {album.artist}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                    <ScrollBar orientation='horizontal' />
-                  </ScrollArea>
-                </div>
-                <div className='flex items-center justify-between'>
-                  <div className='space-y-1'>
-                    <h2 className='text-2xl font-semibold tracking-tight'>
-                      Available
-                    </h2>
-                    <p className='text-sm text-muted-foreground'>
-                      Top picks for you. Updated daily.
+                <div className='flex flex-1 flex-col space-y-2 p-4'>
+                  <h3 className='text-sm font-medium text-gray-900'>
+                    <a href={product.href}>
+                      <span aria-hidden='true' className='absolute inset-0' />
+                      {product.name}
+                    </a>
+                  </h3>
+                  <p className='text-sm text-gray-500'>{product.description}</p>
+                  <div className='flex flex-1 flex-col justify-end'>
+                    <p className='text-sm italic text-gray-500'>
+                      {product.options}
+                    </p>
+                    <p className='text-base font-medium text-gray-900'>
+                      {product.price}
                     </p>
                   </div>
                 </div>
-                <Separator className='my-4' />
-                <div className='relative'>
-                  <ScrollArea>
-                    <div className='flex space-x-4 pb-4'>
-                      {listenNowAlbums.map((album) => (
-                        <AlbumArtwork
-                          key={album.name}
-                          album={album}
-                          className='w-[250px]'
-                          aspectRatio='portrait'
-                          width={250}
-                          height={330}
-                        />
-                      ))}
-                    </div>
-                    <ScrollBar orientation='horizontal' />
-                  </ScrollArea>
-                </div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
