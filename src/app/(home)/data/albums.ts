@@ -82,4 +82,9 @@ export const productCategories: Album[] = [
     artist: '',
     cover: '/images/categories/kepmi.svg',
   },
+  {
+    name: 'Khác',
+    artist: '',
+    cover: '/images/categories/more.svg',
+  },
 ];
