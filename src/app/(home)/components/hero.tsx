@@ -1,5 +1,8 @@
-import { CommandMenu } from '@/components/command-menu';
+import { Siracha } from '@/app/fonts';
+import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import Link from 'next/link';
+
 const features = [
   { name: 'Origin', description: 'Designed by Good Goods, Inc.' },
   {
@@ -23,64 +26,39 @@ const features = [
 const Hero = () => {
   return (
     <>
-      <div className='h-[70vh]'>
+      <div className='bg-[#efaaa5] relative h-[70vh] min-h-[600px]  mb-10'>
         <div
-          className='top-0 left-0 bg-no-repeat h-[70vh] max-w-screen w-full absolute bg-[#e0818d] z-[-1] '
-          style={{
-            backgroundSize: '100%',
-            backgroundPositionX: '55%',
-          }}
-        ></div>
-        <div className='container flex h-full justify-between items-center font-Pacifico'>
-          <div className='max-w-xl  space-y-3'>
-            <h1 className='text-white text-2xl md:text-6xl leading-normal'>
-              Be high-end with <br />
-              Hi-Anne.
-            </h1>
-            <CommandMenu />
-          </div>
-          <div className='relative min-w-[500px] h-[500px]'>
-            <Image
-              src={'/images/logo/logo.png'}
-              className='aspect-square bg-blend-color-burn h-full w-full'
-              alt='hero'
-              fill
-            />
-          </div>
-        </div>
-      </div>
-      <div className='bg-white'>
-        <div aria-hidden='true' className='relative'>
-          <img
-            src='https://tailwindui.com/img/ecommerce-images/product-feature-02-full-width.jpg'
-            alt=''
-            className='h-96 w-full object-cover object-center'
+          aria-hidden='true'
+          className='relative h-[70vh] min-h-[600px] w-full '
+        >
+          <Image
+            src={'/images/logo/bg.svg'}
+            fill
+            alt='bg'
+            priority
+            quality={50}
+            className='bg-[#efaaa5] object-cover object-left'
           />
-          <div className='absolute inset-0 bg-gradient-to-t from-white' />
+          {/* <div className='absolute inset-0 bg-gradient-to-t from-white/60' /> */}
         </div>
-
-        <div className='relative mx-auto -mt-12 max-w-7xl px-4 pb-16 sm:px-6 sm:pb-24 lg:px-8'>
-          <div className='mx-auto max-w-2xl text-center lg:max-w-4xl'>
-            <h2 className='text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>
-              Technical Specifications
-            </h2>
-            <p className='mt-4 text-gray-500'>
-              Organize is a system to keep your desk tidy and photo-worthy all
-              day long. Procrastinate your work while you meticulously arrange
-              items into dedicated trays.
-            </p>
+        <div className='container absolute top-0 left-1/2 -translate-x-1/2  h-[70vh] min-h-[600px] '>
+          <div className='absolute top-1/2 -translate-y-1/2 left-10 flex flex-col items-start gap-4'>
+            <h1
+              className={cn(
+                'text-4xl sm:text-5xl md:text-7xl text-white uppercase italic',
+                Siracha.className
+              )}
+            >
+              Be high-end
+              <br /> with hi-anne
+            </h1>
+            <Link
+              href='#'
+              className='px-5 py-2 bg-white shadow-lg rounded-3xl text-[#e86aa7] uppercase !font-Siracha hover:scale-105 transition-all duration-200'
+            >
+              <span className='magic-text'>Shop Now</span>
+            </Link>
           </div>
-
-          <dl className='mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 sm:gap-y-16 lg:max-w-none lg:grid-cols-3 lg:gap-x-8'>
-            {features.map((feature) => (
-              <div key={feature.name} className='border-t border-gray-200 pt-4'>
-                <dt className='font-medium text-gray-900'>{feature.name}</dt>
-                <dd className='mt-2 text-sm text-gray-500'>
-                  {feature.description}
-                </dd>
-              </div>
-            ))}
-          </dl>
         </div>
       </div>
     </>

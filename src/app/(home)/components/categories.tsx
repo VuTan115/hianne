@@ -31,7 +31,7 @@ const Categories = () => {
                   />
                 </div>
                 <div className='space-y-1 text-sm'>
-                  <h3 className='font-medium leading-none text-center'>
+                  <h3 className='leading-none text-center  font-bold'>
                     {album.name}
                   </h3>
                   <p className='text-xs text-muted-foreground'>

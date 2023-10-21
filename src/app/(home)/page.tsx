@@ -2,6 +2,7 @@ import { SiteHeader } from '@/components/site-header';
 import Categories from './components/categories';
 import Hero from './components/hero';
 import Products from './components/products';
+import Banner from './components/banner';
 const products = [
   {
     id: 1,
@@ -72,6 +73,7 @@ export default function Home() {
       <SiteHeader />
       <Hero />
       <Categories />
+      <Banner />
       <Products title='Các sản phẩm có sẵn' products={[]} />
       <Products title='Trending' products={[]} />
       <Products title='Hàng order' products={[]} />

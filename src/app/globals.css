@@ -4,6 +4,9 @@
 
 @layer base {
   :root {
+    --purple: #e86aa7;
+    --violet: #ce1870;
+    --pink: rgb(244, 143, 177);
     --nav-h:76px;
     --background: #faeee7;
     --headline:#33272a;
@@ -101,4 +104,29 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+@keyframes background-pan {
+  from {
+    background-position: 0% center;
+  }
+
+  to {
+    background-position: -200% center;
+  }
+}
+.magic-text {
+  animation: background-pan 3s linear infinite;
+  background: linear-gradient(
+    to right,
+    var(--purple),
+    var(--violet),
+    var(--pink),
+    var(--purple)
+  );
+  background-size: 200%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  white-space: nowrap;
 }

@@ -1,17 +1,11 @@
-import { ThemeProvider } from '@/components/providers';
 import { TailwindIndicator } from '@/components/tailwind-indicator';
 import { ThemeSwitcher } from '@/components/theme-switcher';
 import { Toaster as DefaultToaster } from '@/components/ui/toaster';
 import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
 import type { Metadata } from 'next';
-import { Comfortaa } from 'next/font/google';
+import { comfortaa } from './fonts';
 import './globals.css';
-
-const comfortaa = Comfortaa({
-  weight: ['400', '600', '700'],
-  subsets: ['vietnamese'],
-});
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -23,19 +17,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <head />
       <body
         className={cn(
-          'min-h-screen bg-background font-sans antialiased',
+          'min-h-screen bg-background font-sans',
           comfortaa.className
         )}
       >
-        <ThemeProvider
-          attribute='class'
-          defaultTheme='system'
-          enableSystem
-          disableTransitionOnChange
-        >
-          <main className='min-h-screen flex flex-col'>{children}</main>
-          <TailwindIndicator />
-        </ThemeProvider>
+        <main className='min-h-screen flex flex-col'>{children}</main>
+        <TailwindIndicator />
         <ThemeSwitcher />
         <DefaultToaster />
       </body>
