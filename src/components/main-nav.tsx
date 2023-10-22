@@ -1,60 +1,168 @@
 'use client';
 
-import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
+import { ChevronDownIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import Image from 'next/image';
 import Link from 'next/link';
-import * as React from 'react';
+type NavItemProps = {
+  name: string;
+  url?: string;
+  subs?: NavItemProps[];
+};
 
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from '@/components/ui/navigation-menu';
-import { Icons } from './icons';
-const components: { title: string; href: string; description: string }[] = [
+const navItems: NavItemProps[] = [
   {
-    title: 'Alert Dialog',
-    href: '/docs/primitives/alert-dialog',
-    description:
-      'A modal dialog that interrupts the user with important content and expects a response.',
+    name: 'Son',
+    url: '/',
+    subs: [
+      {
+        name: 'MAC Cosmetics',
+      },
+      {
+        name: 'Maybelline New York',
+      },
+      {
+        name: "L'Oréal Paris",
+      },
+      {
+        name: 'Chanel',
+      },
+      {
+        name: 'Dior',
+      },
+      {
+        name: 'NARS',
+      },
+      {
+        name: 'NYX Professional Makeup',
+      },
+      {
+        name: 'Huda Beauty',
+      },
+      {
+        name: 'Urban Decay',
+      },
+      {
+        name: 'Fenty Beauty by Rihanna',
+      },
+    ],
   },
   {
-    title: 'Hover Card',
-    href: '/docs/primitives/hover-card',
-    description:
-      'For sighted users to preview content available behind a link.',
+    name: 'Phấn',
+    url: '/',
+
+    subs: [
+      {
+        name: 'Phấn má',
+        url: '',
+        subs: [
+          {
+            name: 'Maybelline New York',
+          },
+          {
+            name: 'Fenty Beauty by Rihanna',
+          },
+          {
+            name: 'Urban Decay',
+          },
+          {
+            name: 'Make Up For Ever',
+          },
+          {
+            name: 'NYX Professional Makeup',
+          },
+          {
+            name: 'Laura Mercier',
+          },
+          {
+            name: 'Huda Beauty',
+          },
+        ],
+      },
+      {
+        name: 'Phấn má',
+        url: '',
+        subs: [
+          {
+            name: 'NARS',
+          },
+          {
+            name: 'MAC Cosmetics',
+          },
+          {
+            name: 'Benefit Cosmetics',
+          },
+          {
+            name: 'Tarte Cosmetics',
+          },
+          {
+            name: 'Clinique',
+          },
+          {
+            name: 'Bobbi Brown',
+          },
+          {
+            name: 'Too Faced',
+          },
+          {
+            name: 'Milani',
+          },
+        ],
+      },
+      {
+        name: 'Phấn phủ',
+        url: '',
+        subs: [
+          {
+            name: 'NARS',
+          },
+          {
+            name: 'MAC Cosmetics',
+          },
+          {
+            name: 'Benefit Cosmetics',
+          },
+          {
+            name: 'Tarte Cosmetics',
+          },
+          {
+            name: 'Clinique',
+          },
+          {
+            name: 'Bobbi Brown',
+          },
+          {
+            name: 'Too Faced',
+          },
+          {
+            name: 'Milani',
+          },
+        ],
+      },
+    ],
   },
   {
-    title: 'Progress',
-    href: '/docs/primitives/progress',
-    description:
-      'Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.',
+    name: 'Kẻ',
+    subs: [
+      { name: 'Mắt', url: '/' },
+      { name: 'Chân mày', url: '/' },
+      { name: 'Môi', url: '/' },
+    ],
   },
   {
-    title: 'Scroll-area',
-    href: '/docs/primitives/scroll-area',
-    description: 'Visually or semantically separates content.',
+    name: 'Kem',
+    subs: [
+      { name: 'Kem nền' },
+      { name: 'Kem chống nắng' },
+      { name: 'Kem lót' },
+    ],
   },
-  {
-    title: 'Tabs',
-    href: '/docs/primitives/tabs',
-    description:
-      'A set of layered sections of content—known as tab panels—that are displayed one at a time.',
-  },
-  {
-    title: 'Tooltip',
-    href: '/docs/primitives/tooltip',
-    description:
-      'A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.',
-  },
+  { name: 'Kẹp mi' },
+  { name: 'Khác' },
 ];
 export function MainNav() {
   return (
-    <div className='mr-4 hidden md:flex'>
+    <div className='mr-4 hidden md:flex md:flex-1'>
       <Link href='/' className='mr-6 flex items-center space-x-2'>
         {/* <Image alt='' width={48} height={48} className='rounded-sm shadow-md' /> */}
         <div className='relative overflow-hidden h-12 w-12'>
@@ -65,60 +173,48 @@ export function MainNav() {
             className='object-cover transition-all scale-[1.6] aspect-square'
           />
         </div>
-        {/* <span className='hidden font-bold sm:inline-block'>
-          {siteConfig.name}
-        </span> */}
       </Link>
-      <nav className='flex items-center space-x-6 text-sm font-medium'>
-        <NavigationMenu>
-          <NavigationMenuList>
-            <NavigationMenuItem>
-              <NavigationMenuTrigger className='!bg-transparent hover:!bg-transparent text-base !text-white'>
-                Shop the marketplace
-              </NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className='grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] '>
-                  {components.map((component) => (
-                    <ListItem
-                      key={component.title}
-                      title={component.title}
-                      href={component.href}
-                    >
-                      {component.description}
-                    </ListItem>
-                  ))}
-                </ul>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
+      <nav className='flex  items-center space-x-6 text-sm font-medium w-full flex-shrink-0'>
+        <div className='relative text-base text-white group/nav cursor-pointer overflow-visible'>
+          <div className='flex gap-3 items-center justify-between'>
+            <span>Sản phẩm</span>
+            <ChevronDownIcon className='mb-1 group-hover/nav:-rotate-180 transition-all duration-200' />
+          </div>
+          <div className='hidden group-hover/nav:grid grid-cols-3  container w-full min-w-[70vw] bg-white absolute rounded-md shadow-lg  min-h-[60vh] max-w-3xl -z-0 pt-4 pb-5'>
+            <div className='bg-white col-span-1 h-full space-y-2'>
+              {navItems.map((item, idx) => (
+                <NavItem key={idx} {...item} />
+              ))}
+            </div>
+          </div>
+        </div>
       </nav>
     </div>
   );
 }
 
-const ListItem = React.forwardRef<
-  React.ElementRef<'a'>,
-  React.ComponentPropsWithoutRef<'a'>
->(({ className, title, children, ...props }, ref) => {
+const NavItem = (item: NavItemProps) => {
   return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
-          ref={ref}
+    <li
+      className={cn(
+        'flex items-center justify-between gap-4  pl-5 relative hover:bg-black/5 group  right-0 transition-all bg-white overflow-visible  w-full min-w-fit text-black'
+      )}
+    >
+      <div className='peer flex gap-3 items-center justify-between whitespace-nowrap w-full min-w-fit h-full min-h-fit  py-1'>
+        <span>{item.name}</span>
+        {item.subs && item.subs.length > 0 && <ChevronRightIcon />}
+      </div>
+      {item.subs && item.subs.length > 0 && (
+        <ul
           className={cn(
-            'block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
-            className
+            'hidden hover:flex peer-hover:flex flex-col absolute left-full top-0 right-0 bg-white transition-all min-w-fit h-fit min-h-full w-full'
           )}
-          {...props}
         >
-          <div className='text-sm font-medium leading-none'>{title}</div>
-          <p className='line-clamp-2 text-sm leading-snug text-muted-foreground'>
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
+          {item.subs.map((subItem) => (
+            <NavItem key={subItem.name} {...subItem} />
+          ))}
+        </ul>
+      )}
     </li>
   );
-});
-ListItem.displayName = 'ListItem';
+};

@@ -3,6 +3,7 @@ import Categories from './components/categories';
 import Hero from './components/hero';
 import Products from './components/products';
 import Banner from './components/banner';
+import { cloudinaryInstance } from '@/lib/cloudinary';
 const products = [
   {
     id: 1,
@@ -67,7 +68,10 @@ const products = [
   },
   // More products...
 ];
-export default function Home() {
+const getImages = async () => {
+  // await cloudinaryInstance.
+};
+export default async function Home() {
   return (
     <>
       <SiteHeader />
@@ -75,11 +79,11 @@ export default function Home() {
       <Categories />
       <Banner />
       <Products title='Các sản phẩm có sẵn' products={[]} />
-      <Products title='Trending' products={[]} />
+      {/* <Products title='Trending' products={[]} />
       <Products title='Hàng order' products={[]} />
-      <Products title='Hàng khuyến mãi' products={[]} />
+      <Products title='Hàng khuyến mãi' products={[]} /> */}
 
-      <div className='bg-white'>
+      {/* <div className='bg-white'>
         <div className='mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8'>
           <h2 className='sr-only'>Products</h2>
 
@@ -117,7 +121,7 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

@@ -16,15 +16,15 @@ const Categories = () => {
       <div className='relative'>
         <ScrollArea>
           <div className='flex space-x-4 pb-4'>
-            {productCategories.map((album) => (
+            {productCategories.map((category) => (
               <div
-                key={album.name}
+                key={category.name}
                 className='w-[100px] cursor-pointer space-y-3'
               >
                 <div className='relative overflow-hidden rounded-full w-[100px] h-[100px]'>
                   <Image
-                    src={album.cover}
-                    alt={album.name}
+                    src={category.thumbnail}
+                    alt={category.name}
                     fill
                     priority
                     className='aspect-square object-cover scale-150 hover:scale-[1.6]'
@@ -32,11 +32,8 @@ const Categories = () => {
                 </div>
                 <div className='space-y-1 text-sm'>
                   <h3 className='leading-none text-center  font-bold'>
-                    {album.name}
+                    {category.name}
                   </h3>
-                  <p className='text-xs text-muted-foreground'>
-                    {album.artist}
-                  </p>
                 </div>
               </div>
             ))}

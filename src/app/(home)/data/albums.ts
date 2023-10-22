@@ -3,6 +3,10 @@ export interface Album {
   artist: string;
   cover: string;
 }
+export interface Category {
+  name: string;
+  thumbnail: string;
+}
 
 export const listenNowAlbums: Album[] = [
   {
@@ -31,60 +35,49 @@ export const listenNowAlbums: Album[] = [
   },
 ];
 
-export const productCategories: Album[] = [
+export const productCategories: Category[] = [
   {
     name: 'Son',
-    artist: '',
-    cover: '/images/categories/son.svg',
+    thumbnail: '/images/categories/son.svg',
   },
   {
     name: 'Mascara',
-    artist: '',
-    cover: '/images/categories/mascara.svg',
+    thumbnail: '/images/categories/mascara.svg',
   },
   {
     name: 'Phấn mắt',
-    artist: '',
-    cover: '/images/categories/phanmat.svg',
+    thumbnail: '/images/categories/phanmat.svg',
   },
   {
     name: 'Phấn má',
-    artist: '',
-    cover: '/images/categories/phanma.svg',
+    thumbnail: '/images/categories/phanma.svg',
   },
   {
     name: 'Phấn phủ',
-    artist: '',
-    cover: '/images/categories/phanphu.svg',
+    thumbnail: '/images/categories/phanphu.svg',
   },
   {
     name: 'Kẻ mắt, chân mày, môi',
-    artist: '',
-    cover: '/images/categories/ke.svg',
+    thumbnail: '/images/categories/ke.svg',
   },
   {
     name: 'Kem nền',
-    artist: '',
-    cover: '/images/categories/kemnen.svg',
+    thumbnail: '/images/categories/kemnen.svg',
   },
   {
     name: 'Kem lót',
-    artist: '',
-    cover: '/images/categories/kemlot.svg',
+    thumbnail: '/images/categories/kemlot.svg',
   },
   {
     name: 'Kem chống nắng',
-    artist: '',
-    cover: '/images/categories/kemchongnang.svg',
+    thumbnail: '/images/categories/kemchongnang.svg',
   },
   {
     name: 'Kẹp mi',
-    artist: '',
-    cover: '/images/categories/kepmi.svg',
+    thumbnail: '/images/categories/kepmi.svg',
   },
   {
     name: 'Khác',
-    artist: '',
-    cover: '/images/categories/more.svg',
+    thumbnail: '/images/categories/more.svg',
   },
 ];
