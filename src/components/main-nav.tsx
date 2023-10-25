@@ -167,15 +167,15 @@ export function MainNav() {
         {/* <Image alt='' width={48} height={48} className='rounded-sm shadow-md' /> */}
         <div className='relative overflow-hidden h-12 w-12'>
           <Image
-            src={'/images/logo/nav-logo.svg'}
+            src={'/images/logo/hianne.svg'}
             alt='HiAnne'
             fill
-            className='object-cover transition-all scale-[1.6] aspect-square'
+            className='object-contain transition-all aspect-square'
           />
         </div>
       </Link>
       <nav className='flex  items-center space-x-6 text-sm font-medium w-full flex-shrink-0'>
-        <div className='relative text-base text-white group/nav cursor-pointer overflow-visible'>
+        <div className='relative text-base text-black/60 group/nav cursor-pointer overflow-visible'>
           <div className='flex gap-3 items-center justify-between'>
             <span>Sản phẩm</span>
             <ChevronDownIcon className='mb-1 group-hover/nav:-rotate-180 transition-all duration-200' />

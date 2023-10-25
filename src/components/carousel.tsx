@@ -2,7 +2,7 @@
 import { cn } from '@/lib/utils';
 import { clamp } from '@/utils/number-formater';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 type CarouselProps = {
   children: React.ReactNode[];
@@ -25,28 +25,79 @@ const CarouselContext = React.createContext<CarouselContextProps>({
   prev: () => undefined,
 });
 
-const Carousel = ({ children }: CarouselProps) => {
+const Carousel = ({ children, loop, autoPlay }: CarouselProps) => {
   const [currentIndex, setCurrentIndex] = React.useState<number>(0);
   const maxSlideIndex: number = children.length - 1;
-  const next = () => {
-    setCurrentIndex((pre) => clamp(pre + 1, 0, maxSlideIndex));
-  };
-  const prev = () => {
-    setCurrentIndex((pre) => clamp(pre - 1, 0, maxSlideIndex));
-  };
-  const goTo = (idx: number) => {
-    setCurrentIndex(clamp(idx, 0, maxSlideIndex));
-  };
+  const slideRef = React.useRef<HTMLDivElement>(null);
+  const scrollIntoView = React.useCallback((idx: number) => {
+    const slide = slideRef?.current;
+    if (slide) {
+      slide.style.transform = `translateX(${-100 * idx}%)`;
+    }
+  }, []);
+  const goTo = useCallback(
+    (idx: number) => {
+      setCurrentIndex(clamp(idx, 0, maxSlideIndex));
+      scrollIntoView(clamp(idx, 0, maxSlideIndex));
+    },
+    [maxSlideIndex, scrollIntoView]
+  );
+  const next = useCallback(() => {
+    if (currentIndex < maxSlideIndex) {
+      goTo(currentIndex + 1);
+    } else if (loop) {
+      goTo(0);
+    }
+  }, [currentIndex, goTo, maxSlideIndex, loop]);
+
+  const prev = useCallback(() => {
+    if (currentIndex > 0) {
+      goTo(currentIndex - 1);
+    } else if (loop) {
+      goTo(maxSlideIndex);
+    }
+  }, [currentIndex, goTo, maxSlideIndex, loop]);
+
+  useEffect(() => {
+    if (autoPlay) {
+      const interval = setInterval(() => {
+        if (loop) {
+          next();
+        } else if (currentIndex < maxSlideIndex) {
+          next();
+        } else {
+          clearInterval(interval);
+        }
+      }, 3000);
+      return () => {
+        clearInterval(interval);
+      };
+    }
+  }, [autoPlay, currentIndex, maxSlideIndex, loop, next]);
 
   return (
     <CarouselContext.Provider
       value={{ currentIndex, next, prev, maxSlideIndex, goTo }}
     >
       <div className='relative'>
-        <div className='relative h-full w-full min-h-[600px]'>
-          {children[currentIndex]}
+        <div className='w-full relative min-h-[300px] lg:min-h-[50vh] overflow-hidden'>
+          <div
+            ref={slideRef}
+            className='flex flex-row h-full w-full min-h-[300px] lg:min-h-[50vh] flex-shrink-0 flex-grow-1 transition-all duration-300'
+          >
+            {children.map((child, idx) => {
+              return (
+                <div
+                  key={idx}
+                  className='relative h-full max-w-full w-full min-h-[300px] lg:min-h-[50vh] flex-shrink-0 flex-grow-1 overflow-hidden '
+                >
+                  {child}
+                </div>
+              );
+            })}
+          </div>
         </div>
-        {currentIndex}
+
         <Dots />
         <CarouselController />
       </div>

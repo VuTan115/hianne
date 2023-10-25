@@ -33,6 +33,19 @@ export const listenNowAlbums: Album[] = [
     cover:
       'https://images.unsplash.com/photo-1490300472339-79e4adc6be4a?w=300&dpr=2&q=80',
   },
+
+  {
+    name: 'Frank Burns Symphony',
+    artist: '$57.00',
+    cover:
+      'https://images.unsplash.com/photo-1490300472339-79e4adc6be4a?w=300&dpr=2&q=80',
+  },
+  {
+    name: 'Frank Burns Symphony',
+    artist: '$57.00',
+    cover:
+      'https://images.unsplash.com/photo-1490300472339-79e4adc6be4a?w=300&dpr=2&q=80',
+  },
 ];
 
 export const productCategories: Category[] = [

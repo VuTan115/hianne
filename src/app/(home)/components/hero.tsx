@@ -29,7 +29,7 @@ const Hero = () => {
       <div className='bg-[#efaaa5] relative h-[70vh] min-h-[600px]  mb-10'>
         <div
           aria-hidden='true'
-          className='relative h-[70vh] min-h-[600px] w-full '
+          className='absolute h-[70vh] min-h-[600px] w-full '
         >
           <Image
             src={'/images/logo/bg.svg'}
@@ -37,20 +37,22 @@ const Hero = () => {
             alt='bg'
             priority
             quality={50}
-            className='bg-[#efaaa5] object-cover object-left'
+            className=' object-cover object-center'
           />
           {/* <div className='absolute inset-0 bg-gradient-to-t from-white/60' /> */}
         </div>
-        <div className='container absolute top-0 left-1/2 -translate-x-1/2  h-[70vh] min-h-[600px] '>
-          <div className='absolute top-1/2 -translate-y-1/2 left-10 flex flex-col items-start gap-4'>
+        <div className='container py-10 flex h-[70vh] min-h-[600px]  w-full justify-between items-center gap-5 flex-wrap md:flex-nowrap'>
+          <div className='relative w-full h-full flex flex-col items-start justify-center gap-8 2xl:min-w-[30vw]'>
             <h1
               className={cn(
-                'text-4xl sm:text-5xl md:text-7xl text-white uppercase italic',
+                'text-4xl xs:text-5xl sm:text-6xl xl:text-7xl text-[#db8c8c] uppercase italic',
                 Siracha.className
               )}
+              style={{ textShadow: '3px 3px #f8cecf' }}
             >
-              Be high-end
-              <br /> with hi-anne
+              Be&nbsp;
+              <span className='whitespace-nowrap'>high-end</span>
+              <br /> with <span className='whitespace-nowrap'>hi-anne</span>
             </h1>
             <Link
               href='#'
@@ -59,7 +61,18 @@ const Hero = () => {
               <span className='magic-text'>Shop Now</span>
             </Link>
           </div>
+          <div className='relative w-full h-full max-h-[550px] hidden sm:block'>
+            <Image
+              src={'/images/banners/hero.svg'}
+              fill
+              alt='bg'
+              priority
+              quality={50}
+              className=' object-contain object-center'
+            />
+          </div>
         </div>
+        {/* <div className='container relative top-0 left-1/2 -translate-x-1/2  h-[70vh] min-h-[600px] '></div> */}
       </div>
     </>
   );

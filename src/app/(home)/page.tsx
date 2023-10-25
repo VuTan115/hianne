@@ -78,7 +78,7 @@ export default async function Home() {
       <Hero />
       <Categories />
       <Banner />
-      <Products title='Các sản phẩm có sẵn' products={[]} />
+      <Products title='Son' products={[]} />
       {/* <Products title='Trending' products={[]} />
       <Products title='Hàng order' products={[]} />
       <Products title='Hàng khuyến mãi' products={[]} /> */}

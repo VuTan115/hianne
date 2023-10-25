@@ -26,18 +26,18 @@ export function Cart() {
             viewBox='0 0 24 24'
           >
             <path
-              fill='#fff'
+              fill='#0009'
               d='M17.5 22a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM8.5 22a1.5 1.5 0 100-3 1.5 1.5 0 000 3z'
             ></path>
             <path
-              stroke='#fff'
+              stroke='#0009'
               strokeLinecap='round'
               strokeMiterlimit='10'
               strokeWidth='1.5'
               d='M19.25 17.25H6.71c-.12 0-.22-.09-.25-.2L3.79 2.96a.248.248 0 00-.25-.2H1.75'
             ></path>
             <path
-              stroke='#fff'
+              stroke='#0009'
               strokeLinecap='round'
               strokeMiterlimit='10'
               strokeWidth='1.5'
