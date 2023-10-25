@@ -31,13 +31,22 @@ const Banner = () => {
           />
         </div>
       </div> */}
-      <Carousel autoPlay loop>
+      <Carousel loop>
         {[
           '/images/banners/comming-soon.png',
           '/images/banners/order-process.png',
           '/images/banners/best-seller.png',
         ].map((src, idx) => {
-          return <Image key={`${src}-${idx}`} src={src} priority alt='' fill />;
+          return (
+            <Image
+              key={`${src}-${idx}`}
+              src={src}
+              priority
+              alt='Hianne shop sắp có sản phẩm mới'
+              fill
+              className='object-contain'
+            />
+          );
         })}
       </Carousel>
     </section>

@@ -4,7 +4,7 @@ import { Toaster as DefaultToaster } from '@/components/ui/toaster';
 import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
 import type { Metadata } from 'next';
-import { comfortaa } from './fonts';
+import { openSans } from './fonts';
 import './globals.css';
 
 interface RootLayoutProps {
@@ -18,7 +18,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body
         className={cn(
           'min-h-screen bg-background font-sans',
-          comfortaa.className
+          openSans.className
         )}
       >
         <main className='min-h-screen flex flex-col'>{children}</main>

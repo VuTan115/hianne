@@ -1,3 +1,4 @@
+import { Open_Sans } from 'next/font/google';
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ['class'],
@@ -12,6 +13,7 @@ module.exports = {
       Pacifico: ['var(--pacifico)', 'sans-serif'],
       Comfortaa: ['var(--comfortaa)', 'sans-serif'],
       Siracha: ['var(--siracha)', 'sans-serif'],
+      Open_Sans: ['var(--opensans)', 'sans-serif'],
     },
     container: {
       center: true,
@@ -79,6 +81,7 @@ module.exports = {
         Pacifico: ['var(--pacifico)', 'sans-serif'],
         Comfortaa: ['var(--comfortaa)', 'sans-serif'],
         Siracha: ['var(--siracha)', 'sans-serif'],
+        Open_Sans: ['var(--opensans)', 'sans-serif'],
       },
     },
   },
