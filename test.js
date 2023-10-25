@@ -1,28 +1,36 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri =
-  'mongodb+srv://hianne:7cO4nvv9StJtO7jQ@hianne.eb2of8x.mongodb.net/?retryWrites=true&w=majority';
-
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
+let google = require('googleapis');
+let secretKey = require('./secrets.json');
+let jwtClient = new google.auth.JWT(
+  secretKey.client_email,
+  null,
+  secretKey.private_key,
+  ['https://www.googleapis.com/auth/spreadsheets']
+);
+//authenticate request
+jwtClient.authorize(function (err, tokens) {
+  if (err) {
+    console.log(err);
+    return;
+  } else {
+    console.log('Successfully connected!');
+  }
 });
 
-async function run() {
-  try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db('admin').command({ ping: 1 });
-    console.log(
-      'Pinged your deployment. You successfully connected to MongoDB!'
-    );
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
+//Google Sheets API
+let spreadsheetId = process.env.PRODUCTS_SHEET_ID;
+let sheetRange = 'A1:B1';
+let sheets = google.sheets('v4');
+sheets.spreadsheets.values.get(
+  {
+    auth: jwtClient,
+    spreadsheetId: spreadsheetId,
+    range: sheetRange,
+  },
+  function (err, response) {
+    if (err) {
+      console.log('The API returned an error: ' + err);
+    } else {
+      console.log(response);
+    }
   }
-}
-run().catch(console.dir);
+);

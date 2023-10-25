@@ -41,7 +41,7 @@ const Hero = () => {
           />
           {/* <div className='absolute inset-0 bg-gradient-to-t from-white/60' /> */}
         </div>
-        <div className='container py-10 flex h-[70vh] min-h-[600px]  w-full justify-between items-center gap-5 flex-wrap md:flex-nowrap'>
+        <div className='container py-10 flex h-[70vh] min-h-[600px]  w-full justify-between items-center gap-5 flex-wrap md:flex-nowrap overflow-hidden'>
           <div className='relative w-full h-full flex flex-col items-start justify-center gap-8 2xl:min-w-[30vw]'>
             <h1
               className={cn(
@@ -61,7 +61,7 @@ const Hero = () => {
               <span className='magic-text'>Shop Now</span>
             </Link>
           </div>
-          <div className='relative w-full h-full max-h-[550px] hidden sm:block'>
+          <div className='relative w-full h-full max-h-[550px] hidden md:block'>
             <Image
               src={'/images/banners/hero.svg'}
               fill

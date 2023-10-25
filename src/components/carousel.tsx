@@ -83,13 +83,13 @@ const Carousel = ({ children, loop, autoPlay }: CarouselProps) => {
         <div className='w-full relative min-h-[300px] lg:min-h-[50vh] overflow-hidden'>
           <div
             ref={slideRef}
-            className='flex flex-row h-full w-full min-h-[300px] lg:min-h-[50vh] flex-shrink-0 flex-grow-1 transition-all duration-300'
+            className='flex flex-row h-full w-full min-h-[300px] sm:min-h-[600px] flex-shrink-0 flex-grow-1 transition-all duration-300'
           >
             {children.map((child, idx) => {
               return (
                 <div
                   key={idx}
-                  className='relative h-full max-w-full w-full min-h-[300px] lg:min-h-[50vh] flex-shrink-0 flex-grow-1 overflow-hidden '
+                  className='relative h-full max-w-full w-full min-h-[300px] sm:min-h-[600px] flex-shrink-0 flex-grow-1 overflow-hidden '
                 >
                   {child}
                 </div>
@@ -113,21 +113,21 @@ const CarouselController = () => {
     <>
       {
         <button
-          className='absolute left-3 top-[calc(50%-16px)]  bg-black/50 p-3 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white focus:outline-none rounded-full hover:scale-110 opacity-40 hover:opacity-100'
+          className='absolute left-3 top-[calc(50%-16px)]  bg-black/30 p-3 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white focus:outline-none rounded-full hover:scale-110 opacity-40 hover:opacity-100'
           onClick={() => {
             prev();
           }}
         >
-          <ChevronLeftIcon className='h-6 w-6' />
+          <ChevronLeftIcon className='h-3 w-3  sm:h-6  sm:w-6' />
         </button>
       }
       <button
-        className='absolute right-3 top-[calc(50%-16px)]  bg-black/50 p-3 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white focus:outline-none rounded-full hover:scale-110 opacity-40 hover:opacity-100'
+        className='absolute right-3 top-[calc(50%-16px)]  bg-black/30 p-3 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white focus:outline-none rounded-full hover:scale-110 opacity-40 hover:opacity-100'
         onClick={() => {
           next();
         }}
       >
-        <ChevronRightIcon className='h-6 w-6' />
+        <ChevronRightIcon className='h-3 w-3  sm:h-6  sm:w-6' />
       </button>
     </>
   );
@@ -138,7 +138,7 @@ const Dots = () => {
     React.useContext(CarouselContext);
 
   return (
-    <div className='bg-black/10 rounded-md px-3 py-1 flex justify-center w-fit absolute left-1/2 -translate-x-1/2 bottom-14 gap-2'>
+    <div className='hidden md:flex bg-black/10 rounded-sm px-3 py-1  justify-center w-fit absolute left-1/2 -translate-x-1/2 bottom-14 gap-2'>
       {new Array(maxSlideIndex + 1).fill(null).map((_, idx) => (
         <div
           onClick={() => goTo(idx)}

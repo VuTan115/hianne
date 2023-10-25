@@ -31,7 +31,7 @@ const Categories = () => {
                   />
                 </div>
                 <div className='space-y-1 text-sm'>
-                  <h3 className='leading-none text-center  font-bold'>
+                  <h3 className='leading-none text-center  font-semibold'>
                     {category.name}
                   </h3>
                 </div>

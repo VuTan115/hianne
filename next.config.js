@@ -5,8 +5,9 @@ const nextConfig = {
       'images.unsplash.com',
       'tailwindui.com',
       'cdn.shopify.com',
-      'res.cloudinary.com',
       'via.placeholder.com',
+      'res.cloudinary.com',
+      'drive.google.com',
     ],
   },
 };
