@@ -1,7 +1,8 @@
-import { getSheetData, getSheets } from '@/lib/sheet';
+import { getSheetData } from '@/lib/sheet';
 import Products from '../components/products';
 import { Product } from '@/interfaces/product';
-
+export const dynamic = 'force-dynamic';
+export const revalidate = 1;
 const fetchProducts = async (): Promise<Product[]> => {
   const data = (await getSheetData('lipstick')) as any as Product[];
   return data;
@@ -18,4 +19,3 @@ const page = async () => {
 };
 
 export default page;
-export const dynamic = 'force-dynamic';
