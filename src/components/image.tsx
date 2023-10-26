@@ -1,7 +1,7 @@
 'use client';
 import { cn } from '@/lib/utils';
 import Image, { ImageProps } from 'next/image';
-
+const fallbackSrc = '/images/noise-extra-small.png';
 interface CustomImageProps extends ImageProps {
   // add any additional props you need
 }

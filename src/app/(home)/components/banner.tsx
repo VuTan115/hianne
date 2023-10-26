@@ -1,51 +1,31 @@
 import Carousel from '@/components/carousel';
-import Image from 'next/image';
-import React from 'react';
+import CustomImage from '@/components/image';
+import { getSheetData } from '@/lib/sheet';
+type BannerProps = {
+  image: string;
+  alt: string;
+};
 
-const Banner = () => {
+const getBanner = async (): Promise<BannerProps[]> => {
+  const data: BannerProps[] = await getSheetData('banner');
+  return data;
+};
+const Banner = async () => {
+  const banners = await getBanner();
   return (
     <section className='container relative min-h-[200px] md:min-h-[400px] lg:min-w-[600px] w-full my-5'>
-      {/* <div className='flex overflow-x-scroll inset-0 scroll-smooth snap-x snap-mandatory absolute hide_scrollbar'>
-        <div className='relative h-full w-full flex-shrink-0'>
-          <Image
-            src='/images/banners/comming-soon.png'
-            fill
-            className='object-center object-contain flex-1'
-            alt='các sản phẩm sắp được bán của Hi Anne shop'
-          />
-        </div>
-        <div className='relative h-full w-full flex-shrink-0'>
-          <Image
-            src='/images/banners/best-seller.png'
-            fill
-            className='object-center object-contain flex-1'
-            alt='các sản phẩm sắp được bán của Hi Anne shop'
-          />
-        </div>
-        <div className='relative h-full w-full flex-shrink-0'>
-          <Image
-            src='/images/banners/order-process.png'
-            fill
-            className='object-center object-contain flex-1'
-            alt='các sản phẩm sắp được bán của Hi Anne shop'
-          />
-        </div>
-      </div> */}
-      <Carousel loop>
-        {[
-          '/images/banners/comming-soon.png',
-          '/images/banners/order-process.png',
-          '/images/banners/best-seller.png',
-        ].map((src, idx) => {
+      <Carousel autoPlay loop>
+        {banners.map((banner, idx) => {
           return (
-            <Image
-              key={`${src}-${idx}`}
-              src={src}
+            <CustomImage
+              key={`${banner.alt}-${idx}`}
+              src={banner.image}
               priority
-              alt='Hianne shop sắp có sản phẩm mới'
+              alt={banner.alt}
               fill
               className='object-contain'
             />
+            // <span key={idx}>{banner.image}</span>
           );
         })}
       </Carousel>

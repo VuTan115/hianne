@@ -1,5 +1,4 @@
 import { TailwindIndicator } from '@/components/tailwind-indicator';
-import { ThemeSwitcher } from '@/components/theme-switcher';
 import { Toaster as DefaultToaster } from '@/components/ui/toaster';
 import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
@@ -23,7 +22,6 @@ export default async function RootLayout({ children }: RootLayoutProps) {
       >
         <main className='min-h-screen flex flex-col'>{children}</main>
         <TailwindIndicator />
-        <ThemeSwitcher />
         <DefaultToaster />
       </body>
     </html>

@@ -1,4 +1,4 @@
-import { google } from 'googleapis';
+import { google, sheets_v4 } from 'googleapis';
 
 const target = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
 const jwt = new google.auth.JWT(
@@ -10,21 +10,9 @@ const jwt = new google.auth.JWT(
 
 const googleSheet = google.sheets({ version: 'v4', auth: jwt });
 
-export async function getProducts() {
-  try {
-    const response = await googleSheet.spreadsheets.values.get({
-      spreadsheetId: process.env.SPREADSHEET_ID,
-      range: 'A2:A9',
-    });
-
-    console.log(response.data.values);
-  } catch (err) {
-    console.log(err);
-  }
-  return [];
-}
-
-export async function getSheets() {
+export async function getSheets(): Promise<
+  sheets_v4.Schema$Sheet[] | undefined
+> {
   const response = await googleSheet.spreadsheets.get({
     spreadsheetId: process.env.SPREADSHEET_ID!,
   });
@@ -42,6 +30,20 @@ export async function getSheetData(sheetName: string) {
   return final;
 }
 
+// export async function getSheetD(range: string, sheetId: string) {
+//   try {
+//     const response = await googleSheet.spreadsheets.values.get({
+//       spreadsheetId: process.env.SPREADSHEET_ID,
+
+//       range: 'A2:A9',
+//     });
+
+//     console.log(response.data.values);
+//   } catch (err) {
+//     console.log(err);
+//   }
+//   return [];
+// }
 export async function getAllData() {
   try {
     const response = await googleSheet.spreadsheets.get({
@@ -69,7 +71,8 @@ export async function getAllData() {
   }
 }
 
-export const convertToJSON = (data: any[]) => {
+const getSheetDataByRange = async () => {};
+const convertToJSON = (data: any[]) => {
   const keys = data[0];
   const values = [...data].splice(1);
 
