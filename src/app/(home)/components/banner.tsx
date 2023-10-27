@@ -25,7 +25,6 @@ const Banner = async () => {
               fill
               className='object-contain'
             />
-            // <span key={idx}>{banner.image}</span>
           );
         })}
       </Carousel>

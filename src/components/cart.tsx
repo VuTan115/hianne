@@ -1,22 +1,27 @@
 'use client';
 
-import * as React from 'react';
 
 import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { siteConfig } from '@/config/site';
+import useLocalStorage from '@/hooks/use-local-storage';
+import { Product } from '@/interfaces/product';
+import { convertVndStringToNumber, currencyFormatter } from '@/utils/number-formater';
+import { useState } from 'react';
 
 export function Cart() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [cart, setCart] = useLocalStorage<Product[]>('cart', [])
+  const total = cart.reduce((acc, cur) => acc + convertVndStringToNumber(cur.sellingPrice), 0)
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button
           variant='ghost'
-          className='p-2 text-base hover:bg-black/10 focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0'
+          className='p-2 text-base hover:bg-black/10 focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 relative'
         >
           <svg
             xmlns='http://www.w3.org/2000/svg'
@@ -44,14 +49,51 @@ export function Cart() {
               d='M6.25 13.25h13.78c.13 0 .23-.09.25-.22l.93-7a.25.25 0 00-.25-.28H5'
             ></path>
           </svg>
+          {cart.length > 0 && <span className='text-white text-xs bg-red-400 rounded-full absolute top-0 right-0 h-4 w-4'>{cart.length}</span>}
         </Button>
       </SheetTrigger>
-      <SheetContent side='right' className='pr-0'>
-        <Icons.logo className='h-4 w-4' />
+      <SheetContent side='right' className='pr-5 pb-10 bg-white flex flex-col justify-between'>
+        {/* {cart.length > 0 ? <>
+
+        </> : <span className='text-base text-center text-black font-bold absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 '>Gio hang trong</span>} */}
         <span className='font-bold'>{siteConfig.name}</span>
-        <ScrollArea className='my-4 h-[calc(100vh-8rem)] pb-10 pl-6'>
-          items go here
+        <ScrollArea className='my-4  flex-1 '>
+          <ul role="list" className="divide-y divide-gray-100">
+            {
+              cart.map(product =>
+                <li key={product.slug} className="flex justify-between gap-x-6 py-5">
+                  <div className="flex min-w-0 gap-x-4">
+                    <img className="h-12 w-12 flex-none rounded-full bg-gray-50" src={product.thumbnail} alt="" />
+                    <div className="min-w-0 flex-auto">
+                      <p className="text-sm font-semibold leading-6 text-gray-900">{product.name}</p>
+                      <p className="mt-1 truncate text-xs leading-5 text-gray-500">{product.code}</p>
+                    </div>
+                  </div>
+                  <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                    <p className="text-sm leading-6 text-gray-900">{product.sellingPrice}</p>
+                    <div className="mt-1 flex items-center gap-x-1.5">
+                      <div className="flex-none rounded-full bg-emerald-500/20 p-1">
+                        <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                      </div>
+                      <p className="text-xs leading-5 text-gray-500">Xoá</p>
+                    </div>
+                  </div>
+                </li>
+              )
+
+            }
+          </ul>
         </ScrollArea>
+        <div className="flex justify-between items-center">
+          <span>Tổng cộng:</span>
+          <span className='font-bold text-xl text-black'>{currencyFormatter.format(total)}</span>
+        </div>
+        <button
+          type='button'
+          className='flex max-w-xsitems-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full'
+        >
+          Đặt hàng
+        </button>
       </SheetContent>
     </Sheet>
   );

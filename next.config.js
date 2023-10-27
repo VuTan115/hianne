@@ -5,12 +5,11 @@ const nextConfig = {
   poweredByHeader: false,
   optimizeFonts: true,
   images: {
+    unoptimized: process.env.NODE_ENV === 'development',
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '*.googleusercontent.com',
-        port: '',
-        pathname: '**',
+        hostname: '**',
       },
     ],
     domains: [
@@ -33,7 +32,6 @@ const nextConfig = {
     // gzipSize: true,
     scrollRestoration: true,
     // adjustFontFallbacks: true,
-    serverActions: true,
     optimizePackageImports: [
       'lodash-es',
       '@headlessui/react',

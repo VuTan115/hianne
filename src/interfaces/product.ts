@@ -3,12 +3,13 @@ export interface Product {
   slug: string;
   name: string;
   code: string;
-  colorCodes: string[];
+  colorCodes: string;
   price: number;
   discount: string;
-  sellingPrice: string[];
+  sellingPrice: string;
   description: string;
   thumbnail: string;
+  images: string;
   status: 'instock' | 'discontinued' | 'preorder' | 'soldout';
   note: string;
 }

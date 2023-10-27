@@ -15,6 +15,8 @@ const ProductCard = ({ product, className, ...props }: Props) => {
           src={product.thumbnail}
           alt={product.name}
           fill
+          priority
+          sizes='(min-width: 0) 100, (min-width: 640px) 75, (min-width: 1007px) 33, (min-width: 1025px) 25'
           className='object-cover transition-all scale-150 hover:scale-[1.6] aspect-[3/4]'
         />
         <div className='sale absolute top-2 left-1 bg-slate-950/50 text-white px-2 rounded-sm font-bold'>

@@ -83,7 +83,7 @@ export function MainNav() {
         <div className='hidden peer-hover/sp:grid hover:grid container w-full bg-transparent absolute rounded-md shadow-lg max-w-xl -z-0 pt-4 pb-5 top-full bg-white'>
           <div className='relative bg-white h-full space-y-2 w-fit'>
             {navItems.map((item, idx) => (
-              <NavItem key={idx} {...item} />
+              <NavItem key={`${item.name}-${idx}`} {...item} />
             ))}
           </div>
         </div>
