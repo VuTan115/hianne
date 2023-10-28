@@ -1,6 +1,7 @@
 'use client'
 import { ToastAction } from "@/components/ui/toast"
 import { useToast } from "@/components/ui/use-toast"
+import useCart from "@/hooks/use-cart"
 import useLocalStorage from "@/hooks/use-local-storage"
 import { Product } from "@/interfaces/product"
 import { HeartIcon } from "@radix-ui/react-icons"
@@ -8,22 +9,17 @@ import { useSearchParams } from "next/navigation"
 const AddToCart = ({ product }: { product: Product }) => {
   const params = useSearchParams()
   const { toast } = useToast()
+  const { cart, addToCart } = useCart()
 
-  const [cart, setCart] = useLocalStorage<Product[]>('cart', [])
   return <form className='mt-6' >
     <div className='sm:flex-col1 mt-10 flex'>
       <button
         onClick={() => {
-          const selectedCode = params.get('code');
-          const updatedProduct = selectedCode ? { ...product, code: selectedCode } : product;
-          console.log([...cart])
-          console.log([...cart, updatedProduct])
+          const selectedCode = params.get('code')!;
+          const quantity = parseInt(params.get('quantity')!);
+          addToCart({ id: Number(product.id), name: product.name, code: (selectedCode), quantity: (quantity), price: product.sellingPrice, thumbnail: product.thumbnail, slug: product.slug })
           toast({
-            title: "Scheduled: Catch up ",
-            description: "Friday, February 10, 2023 at 5:57 PM",
-            action: (
-              <ToastAction altText="Goto schedule to undo">Undo</ToastAction>
-            ),
+            title: "Thêm vào giỏ hàng thành công",
           })
         }}
         type='button'

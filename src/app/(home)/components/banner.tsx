@@ -10,10 +10,10 @@ const getBanner = async (): Promise<BannerProps[]> => {
   const data: BannerProps[] = await getSheetData('banner');
   return data;
 };
-const Banner = async () => {
+const Banner: React.FC = async () => {
   const banners = await getBanner();
   return (
-    <section className='container relative min-h-[200px] md:min-h-[400px] lg:min-w-[600px] w-full my-5'>
+    <section id='banner' className='container relative min-h-[200px] md:min-h-[400px] lg:min-w-[600px] w-full my-5'>
       <Carousel autoPlay loop>
         {banners.map((banner, idx) => {
           return (

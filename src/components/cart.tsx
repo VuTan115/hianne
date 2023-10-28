@@ -1,21 +1,18 @@
 'use client';
 
-
-import { Icons } from '@/components/icons';
+import ProductQuantity from '@/app/products/components/product-quantity';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { siteConfig } from '@/config/site';
-import useLocalStorage from '@/hooks/use-local-storage';
-import { Product } from '@/interfaces/product';
-import { convertVndStringToNumber, currencyFormatter } from '@/utils/number-formater';
+import useCart from '@/hooks/use-cart';
+import { currencyFormatter } from '@/utils/number-formater';
 import { useState } from 'react';
 
 export function Cart() {
   const [open, setOpen] = useState(false);
-  const [cart, setCart] = useLocalStorage<Product[]>('cart', [])
-  const total = cart.reduce((acc, cur) => acc + convertVndStringToNumber(cur.sellingPrice), 0)
-
+  const { cart, calculateTotalPrice } = useCart()
+  console.log(cart)
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
@@ -60,23 +57,19 @@ export function Cart() {
         <ScrollArea className='my-4  flex-1 '>
           <ul role="list" className="divide-y divide-gray-100">
             {
-              cart.map(product =>
-                <li key={product.slug} className="flex justify-between gap-x-6 py-5">
+              cart && cart.map(item =>
+                <li key={item.slug} className="flex justify-between gap-x-6 py-5">
                   <div className="flex min-w-0 gap-x-4">
-                    <img className="h-12 w-12 flex-none rounded-full bg-gray-50" src={product.thumbnail} alt="" />
+                    <img className="h-12 w-12 flex-none rounded-full bg-gray-50" src={item.thumbnail} alt="" />
                     <div className="min-w-0 flex-auto">
-                      <p className="text-sm font-semibold leading-6 text-gray-900">{product.name}</p>
-                      <p className="mt-1 truncate text-xs leading-5 text-gray-500">{product.code}</p>
+                      <p className="text-sm font-semibold leading-6 text-gray-900">{item.name}</p>
+                      <p className="mt-1 truncate text-xs leading-5 text-gray-500">{item.code}</p>
                     </div>
                   </div>
-                  <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                    <p className="text-sm leading-6 text-gray-900">{product.sellingPrice}</p>
-                    <div className="mt-1 flex items-center gap-x-1.5">
-                      <div className="flex-none rounded-full bg-emerald-500/20 p-1">
-                        <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                      </div>
-                      <p className="text-xs leading-5 text-gray-500">Xoá</p>
-                    </div>
+                  <div className="hidden shrink-0 sm:flex sm:flex-col justify-between sm:items-end">
+                    <p className="text-sm leading-6 text-gray-900">{item.price}</p>
+
+                    <ProductQuantity quantity={item.quantity} />
                   </div>
                 </li>
               )
@@ -86,7 +79,7 @@ export function Cart() {
         </ScrollArea>
         <div className="flex justify-between items-center">
           <span>Tổng cộng:</span>
-          <span className='font-bold text-xl text-black'>{currencyFormatter.format(total)}</span>
+          <span className='font-bold text-xl text-black'>{currencyFormatter.format(calculateTotalPrice())}</span>
         </div>
         <button
           type='button'

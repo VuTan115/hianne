@@ -6,6 +6,8 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { startTransition } from 'react';
 
 import { useState } from 'react';
+import ProductQuantity from './product-quantity';
+import Reviews from './reviews';
 const colors = [
   {
     name: 'Washed Black',
@@ -28,13 +30,14 @@ type Props = {
   colors?: string[]
   colorCodes: { name: string, inStock: boolean }[];
 }
-const ProductColorPicker = ({ colorCodes }: Props) => {
+const ProductAttrPicker = ({ colorCodes }: Props) => {
   const params = useSearchParams()
   const { replace } = useRouter();
   const pathname = usePathname();
-  const [selectedSize, setSelectedSize] = useState(colorCodes[0]);
+  const [selectedCode, setSelectedCode] = useState(colorCodes.find(itm => itm.name === params.get('code')) || colorCodes[0]);
   function handleSelectCode(value: { name: string, inStock: boolean }) {
-    setSelectedSize(value)
+    if (value.name === selectedCode.name) return
+    setSelectedCode(value)
     const { name } = value
     const params = new URLSearchParams(window.location.search);
     if (name) {
@@ -47,48 +50,25 @@ const ProductColorPicker = ({ colorCodes }: Props) => {
         { scroll: false });
     });
   }
+  function handleChangeQuantity(value: number) {
+    const params = new URLSearchParams(window.location.search);
+    if (value) {
+      params.set('quantity', String(value));
+    } else {
+      params.delete('quantity');
+    }
+    startTransition(() => {
+      replace(`${pathname}?${params.toString()}`,
+        { scroll: false });
+    });
+  }
   return (
     <>
-      {/* <RadioGroup
-        value={selectedColor}
-        onChange={setSelectedColor}
-        className='mt-2'
-      >
-        <RadioGroup.Label className='sr-only'>Choose a color</RadioGroup.Label>
-        <span className='flex items-center space-x-3'>
-          {colors.map((color) => (
-            <RadioGroup.Option
-              key={color.name}
-              value={color}
-              className={({ active, checked }) =>
-                cn(
-                  color.selectedColor,
-                  active && checked ? 'ring ring-offset-1' : '',
-                  !active && checked ? 'ring-2' : '',
-                  'relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none'
-                )
-              }
-            >
-              <RadioGroup.Label as='span' className='sr-only'>
-                {color.name}
-              </RadioGroup.Label>
-              <span
-                aria-hidden='true'
-                className={cn(
-                  color.bgColor,
-                  'h-8 w-8 rounded-full border border-black border-opacity-10'
-                )}
-              />
-            </RadioGroup.Option>
-          ))}
-        </span>
-      </RadioGroup> */}
-      {/* Sizes */}
-      <div className='mt-10'>
+      <div className='mt-10 space-y-2 md:space-y-4'>
+        <h3 className='text-sm text-gray-600'>Số lượng</h3>
+        <ProductQuantity quantity={Number(params.get('quantity'))} buttonClassName='h-7 w-7' onPlus={handleChangeQuantity} onMinus={handleChangeQuantity} />
         <div className='flex items-center justify-between'>
           <h3 className='text-sm font-medium text-gray-900'>Mã màu</h3>
-
-
           <Dialog>
             <DialogTrigger className='text-sm font-medium text-indigo-600 hover:text-indigo-500'>  Color guide</DialogTrigger>
             <DialogContent className='bg-white'>
@@ -103,12 +83,11 @@ const ProductColorPicker = ({ colorCodes }: Props) => {
         </div>
 
         <RadioGroup
-          value={selectedSize}
-          defaultValue={{ name: params.get('code'), inStock: true }}
+          value={selectedCode}
           onChange={handleSelectCode}
           className='mt-4'
         >
-          <RadioGroup.Label className='sr-only'>Choose a size</RadioGroup.Label>
+          <RadioGroup.Label className='sr-only'>Choose a color</RadioGroup.Label>
           <div className='grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4'>
             {colorCodes.map((code) => (
               <RadioGroup.Option
@@ -121,7 +100,7 @@ const ProductColorPicker = ({ colorCodes }: Props) => {
                       ? 'cursor-pointer bg-white text-gray-900 shadow-sm'
                       : 'cursor-not-allowed bg-gray-50 text-gray-200',
                     active ? 'ring-2 ring-indigo-500' : '',
-                    'group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6'
+                    'group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6 select-none'
                   )
                 }
               >
@@ -169,4 +148,4 @@ const ProductColorPicker = ({ colorCodes }: Props) => {
   );
 };
 
-export default ProductColorPicker;
+export default ProductAttrPicker;

@@ -1,11 +1,11 @@
+import { Product } from '@/interfaces/product';
 import { findRowBySlug, getSheetData } from '@/lib/sheet';
 import { cn } from '@/lib/utils';
 import { StarIcon } from '@heroicons/react/20/solid';
-import { HeartIcon } from '@heroicons/react/24/outline';
-import ProductImages from '../components/product-images';
-import { Product } from '@/interfaces/product';
-import ProductColorPicker from '../components/product-color-picker';
 import AddToCart from '../components/add-to-cart';
+import ProductAttrPicker from '../components/product-attr-picker';
+import ProductImages from '../components/product-images';
+import Reviews from '../components/reviews';
 export const revalidate = 1;
 const sheetsName = ['lipstick', 'ke', 'phan'];
 // export async function generateStaticParams() {
@@ -22,12 +22,11 @@ const Product = async ({ params }: Props) => {
   // console.log(
   //   await Promise.allSettled([sheetsName.map((item) => getSheetData(item))])
   // );
+  console.log(await getSheetData('ke'))
   const product: Product = await findRowBySlug(
     decodeURI(params.slug),
     'lipstick'
   );
-  console.log(product.colorCodes.split(',').map(item => ({ name: item, inStock: true })))
-  console.log(product)
   return (
     <div className='bg-white'>
       <div className='mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8'>
@@ -87,10 +86,7 @@ const Product = async ({ params }: Props) => {
                 {product.description}
               </pre>
             </div>
-            <div>
-              <h3 className='text-sm text-gray-600'>Color</h3>
-              <ProductColorPicker colorCodes={product.colorCodes.split(',').map(item => ({ name: item, inStock: true }))} />
-            </div>
+            <ProductAttrPicker colorCodes={product.colorCodes.split(',').map(item => ({ name: item, inStock: true }))} />
             <AddToCart product={product} />
 
             <section aria-labelledby='details-heading' className='mt-12'>
@@ -144,8 +140,11 @@ const Product = async ({ params }: Props) => {
                 ))} */}
               </div>
             </section>
+
           </div>
         </div>
+        <Reviews />
+
       </div>
     </div>
   );

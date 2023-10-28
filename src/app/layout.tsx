@@ -20,9 +20,9 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           openSans.className
         )}
       >
+        <DefaultToaster />
         <main className='min-h-screen flex flex-col'>{children}</main>
         <TailwindIndicator />
-        <DefaultToaster />
       </body>
     </html>
   );
