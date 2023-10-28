@@ -18,6 +18,9 @@ const Product = async ({ params, searchParams }: Props) => {
     decodeURI(params.slug),
     searchParams.category
   );
+
+
+  console.log(params.slug, decodeURI(params.slug))
   if (!product) return notFound()
   return (
     <div className='bg-white'>
