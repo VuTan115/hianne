@@ -10,6 +10,7 @@ export interface Product {
   description: string;
   thumbnail: string;
   images: string;
-  status: 'instock' | 'discontinued' | 'preorder' | 'soldout';
+  category: string;
+  status: 'instock' | 'discontinued' | 'preorder' | 'soldout' | 'draft';
   note: string;
 }

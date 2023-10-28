@@ -24,7 +24,7 @@ const ProductCard = ({ product, className, ...props }: Props) => {
         </div>
       </div>
       <div className=''>
-        <Link href={`products/${product.slug}`}>
+        <Link href={`products/${product.slug}?category=${product.category}`}>
           <h3 className='font-normal leading-5 text-left two-lines'>
             {product.name}
           </h3>

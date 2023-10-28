@@ -1,32 +1,24 @@
 import { Product } from '@/interfaces/product';
-import { findRowBySlug, getSheetData } from '@/lib/sheet';
+import { findRowBySlug } from '@/lib/sheet';
 import { cn } from '@/lib/utils';
 import { StarIcon } from '@heroicons/react/20/solid';
+import { notFound } from 'next/navigation';
 import AddToCart from '../components/add-to-cart';
 import ProductAttrPicker from '../components/product-attr-picker';
 import ProductImages from '../components/product-images';
 import Reviews from '../components/reviews';
 export const revalidate = 1;
-const sheetsName = ['lipstick', 'ke', 'phan'];
-// export async function generateStaticParams() {
-//   const res = Promise.allSettled([
-//     sheetsName.map(item => getSheetData(item))
-//   ])
-//   res
-// }
 type Props = {
   params: { slug: string };
+  searchParams: { category: string }
 };
 
-const Product = async ({ params }: Props) => {
-  // console.log(
-  //   await Promise.allSettled([sheetsName.map((item) => getSheetData(item))])
-  // );
-  console.log(await getSheetData('ke'))
+const Product = async ({ params, searchParams }: Props) => {
   const product: Product = await findRowBySlug(
     decodeURI(params.slug),
-    'lipstick'
+    searchParams.category
   );
+  if (!product) return notFound()
   return (
     <div className='bg-white'>
       <div className='mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8'>
