@@ -10,19 +10,27 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**',
+        hostname: 'drive.google.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+
+      {
+        protocol: 'https',
+        hostname: 'lh3.google.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'tailwindui.com',
       },
     ],
-    domains: [
-      'images.unsplash.com',
-      'lh3.google.com',
-      'lh3.googleusercontent.com',
-      'tailwindui.com',
-      'cdn.shopify.com',
-      'via.placeholder.com',
-      'res.cloudinary.com',
-      'drive.google.com',
-    ],
+
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 60,
   },

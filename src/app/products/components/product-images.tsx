@@ -33,7 +33,7 @@ const ProductImages = ({ images }: Props) => {
                             block: 'nearest',
                           });
                         }}
-                        priority={idx < 4}
+                        priority
                         src={image}
                         alt=''
                         fill

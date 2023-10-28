@@ -1,5 +1,5 @@
 import { Product } from '@/interfaces/product';
-import { findRowBySlug } from '@/lib/sheet';
+import { findRowBySlug, getSheetData } from '@/lib/sheet';
 import { cn } from '@/lib/utils';
 import { StarIcon } from '@heroicons/react/20/solid';
 import { notFound } from 'next/navigation';
@@ -12,6 +12,22 @@ type Props = {
   params: { slug: string };
   searchParams: { category: string }
 };
+const sheetsName = [
+  { name: 'Son', sheetId: 'lipstick' },
+  { name: 'Phấn', sheetId: 'phan' },
+  { name: 'Kẻ', sheetId: 'ke' }
+];
+export async function generateStaticParams() {
+  const allProducts = (await Promise.allSettled(sheetsName.map((item) => getSheetData(item.sheetId)))).map((item, idx) => {
+    if (item.status === 'fulfilled') {
+      return ({ ...sheetsName[idx], value: item.value })
+    }
+    return []
+  }) as [{ name: string, sheetId: string, value: Product[] }]
+  return allProducts.reduce((acc, cur) => {
+    return [...acc, ...cur.value.map(prod => ({ slug: prod.slug }))];
+  }, [] as { slug: string }[]);
+}
 
 const Product = async ({ params, searchParams }: Props) => {
   const product: Product = await findRowBySlug(
@@ -20,7 +36,7 @@ const Product = async ({ params, searchParams }: Props) => {
   );
 
 
-  console.log(params.slug, decodeURI(params.slug))
+
   if (!product) return notFound()
   return (
     <div className='bg-white'>
