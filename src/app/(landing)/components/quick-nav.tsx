@@ -13,72 +13,9 @@ const sections = [
   { id: 'ke', title: 'Kẻ', thumbnail: '/images/categories/phanma.svg' },
 ];
 
-export const productCategories: {
-  name: string;
-  thumbnail: string;
-  href: string;
-}[] = [
-  {
-    href: '#',
-    name: 'Son',
-    thumbnail: '/images/categories/son.svg',
-  },
-  {
-    href: '#',
-    name: 'Mascara',
-    thumbnail: '/images/categories/mascara.svg',
-  },
-  {
-    href: '#',
-    name: 'Phấn mắt',
-    thumbnail: '/images/categories/phanmat.svg',
-  },
-  {
-    href: '#',
-    name: 'Phấn má',
-    thumbnail: '/images/categories/phanma.svg',
-  },
-  {
-    href: '#',
-    name: 'Phấn phủ',
-    thumbnail: '/images/categories/phanphu.svg',
-  },
-  {
-    href: '#',
-    name: 'Kẻ mắt, chân mày, môi',
-    thumbnail: '/images/categories/ke.svg',
-  },
-  {
-    href: '#',
-    name: 'Kem nền',
-    thumbnail: '/images/categories/kemnen.svg',
-  },
-  {
-    href: '#',
-    name: 'Kem lót',
-    thumbnail: '/images/categories/kemlot.svg',
-  },
-  {
-    href: '#',
-    name: 'Kem chống nắng',
-    thumbnail: '/images/categories/kemchongnang.svg',
-  },
-  {
-    href: '#',
-    name: 'Kẹp mi',
-    thumbnail: '/images/categories/kepmi.svg',
-  },
-  {
-    href: '#',
-    name: 'Khác',
-    thumbnail: '/images/categories/more.svg',
-  },
-];
-
 export function NavBar() {
   let navBarRef = useRef<HTMLDivElement>(null);
   let [activeIndex, setActiveIndex] = useState<number>(0);
-  let mobileActiveIndex = activeIndex === null ? 0 : activeIndex;
 
   useEffect(() => {
     function updateActiveIndex() {

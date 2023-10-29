@@ -21,10 +21,12 @@ const page = async () => {
   return (
     <>
       {allProducts.map(sheet => {
-        return <div key={sheet.sheetId} className="pt-24" id={sheet.sheetId}>
-          <ProductTitlle title={sheet.name} query={sheet.sheetId} />
-          <Products products={sheet.value} />
-        </div>
+        return (
+          <div key={sheet.sheetId} className='pt-10' id={sheet.sheetId}>
+            <ProductTitlle title={sheet.name} query={sheet.sheetId} />
+            <Products products={sheet.value} />
+          </div>
+        );
       })}
 
     </>

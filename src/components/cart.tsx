@@ -1,6 +1,6 @@
 'use client';
 
-import ProductQuantity from '@/app/products/components/product-quantity';
+import ProductQuantity from '@/app/(shop)/products/components/product-quantity';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -20,6 +20,7 @@ import {
 import { currencyFormatter } from '@/utils/number-formater';
 import Image from 'next/image';
 import { useState } from 'react';
+import FullWidthButton from './full-width-button';
 export function Cart() {
   const [open, setOpen] = useState(false);
   const {
@@ -30,10 +31,10 @@ export function Cart() {
     updateCartItem,
   } = useCart();
   const handleMinusItem = (val: number, cartItem: CartItem) => {
-    updateCartItem(cartItem.id, { quantity: val });
+    updateCartItem(cartItem.code, { quantity: val });
   };
   const handlePlusItem = (val: number, cartItem: CartItem) => {
-    updateCartItem(cartItem.id, { quantity: val });
+    updateCartItem(cartItem.code, { quantity: val });
   };
   return (
     <div>
@@ -185,12 +186,9 @@ export function Cart() {
               {currencyFormatter.format(calculateTotalPrice())}
             </span>
           </div>
-          <button
-            type='button'
-            className='flex max-w-xsitems-center justify-center rounded-md border border-transparent bg-[#eba4ad] px-8 py-3 text-base font-medium text-white hover:bg-[#ec7c8b] focus:outline-none focus:ring-2 focus:ring-[#ee98a3] focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full disabled:!cursor-not-allowed  disabled:pointer-events-none select-none'
-          >
+          <FullWidthButton type='button'>
             {cart.length < 1 ? 'Thêm sản phẩm' : 'Đặt hàng'}
-          </button>
+          </FullWidthButton>
         </SheetContent>
       </Sheet>
     </div>

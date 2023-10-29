@@ -5,7 +5,7 @@ const nextConfig = {
   poweredByHeader: false,
   optimizeFonts: true,
   images: {
-    unoptimized: process.env.NODE_ENV === 'development',
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
