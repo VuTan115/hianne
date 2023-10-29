@@ -1,7 +1,10 @@
-import { Open_Sans } from 'next/font/google';
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ['class'],
+  corePlugins: {
+    preflight: true,
+    fontFamily: true,
+  },
   content: [
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',

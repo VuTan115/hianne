@@ -110,8 +110,8 @@ const NavItem = (item: NavItemProps) => {
             'hidden hover:flex peer-hover:flex flex-col absolute left-full top-0 right-0 bg-white transition-all min-w-fit h-fit min-h-full w-full'
           )}
         >
-          {item.subs.map((subItem) => (
-            <NavItem key={subItem.name} {...subItem} />
+          {item.subs.map((subItem, idx) => (
+            <NavItem key={subItem.name + idx} {...subItem} />
           ))}
         </ul>
       )}

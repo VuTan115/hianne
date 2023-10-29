@@ -2,7 +2,7 @@ import { ScrollArea, ScrollBar } from '@//components/ui/scroll-area';
 import { Separator } from '@//components/ui/separator';
 
 import Image from 'next/image';
-import { NavBar } from './test';
+import { NavBar } from './quick-nav';
 export const productCategories: { name: string; thumbnail: string, href: string }[] = [
   {
     href: '#',
@@ -74,9 +74,9 @@ const Categories = () => {
         <div className='relative'>
           <ScrollArea>
             <div className='flex space-x-4 pb-4'>
-              {productCategories.map((category) => (
+              {productCategories.map((category, idx) => (
                 <div
-                  key={category.name}
+                  key={`${category.name}-${idx}`}
                   className='w-[100px] cursor-pointer space-y-3'
                 >
                   <div className='relative overflow-hidden rounded-full w-[100px] h-[100px]'>
@@ -99,7 +99,6 @@ const Categories = () => {
             <ScrollBar orientation='horizontal' />
           </ScrollArea>
         </div>
-
       </section>
       <NavBar />
     </>

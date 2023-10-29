@@ -1,7 +1,7 @@
 import { convertVndStringToNumber } from '@/utils/number-formater';
 import useLocalStorage from './use-local-storage';
 
-interface CartItem {
+export interface CartItem {
   id: number;
   quantity: number;
   name: string;
@@ -14,9 +14,10 @@ interface CartItem {
 const useCart = (): {
   cart: CartItem[];
   addToCart: (item: CartItem) => void;
-  removeFromCart: (itemId: number) => void;
+  removeFromCart: (itemCode: string) => void;
   clearCart: () => void;
   calculateTotalPrice: () => number;
+  updateCartItem: (id: number, value: Partial<CartItem>) => void;
 } => {
   const [cart, setCart] = useLocalStorage<CartItem[]>('cart', []);
 
@@ -39,8 +40,19 @@ const useCart = (): {
     } else setCart([...cart, item]);
   };
 
-  const removeFromCart = (itemId: number): void => {
-    const updatedCart = cart.filter((item) => item.id !== itemId);
+  const updateCartItem = (itemId: number, update: Partial<CartItem>): void => {
+    setCart((prevCart: CartItem[]) => {
+      return prevCart.map((cartItem) => {
+        if (cartItem.id === itemId) {
+          return { ...cartItem, ...update };
+        }
+        return cartItem;
+      });
+    });
+  };
+
+  const removeFromCart = (itemCode: string): void => {
+    const updatedCart = cart.filter((item) => item.code !== itemCode);
     setCart(updatedCart);
   };
 
@@ -57,7 +69,14 @@ const useCart = (): {
     );
   };
 
-  return { cart, addToCart, removeFromCart, clearCart, calculateTotalPrice };
+  return {
+    cart,
+    addToCart,
+    updateCartItem,
+    removeFromCart,
+    clearCart,
+    calculateTotalPrice,
+  };
 };
 
 export default useCart;

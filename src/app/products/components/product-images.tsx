@@ -56,11 +56,12 @@ const ProductImages = ({ images }: Props) => {
         </ScrollArea>
       </div>
 
-      <Tab.Panels className='aspect-h-1 aspect-w-1 w-full h-full flex-shrink-1 flex-grow'>
+      <Tab.Panels className='aspect-h-1 aspect-w-1 w-full h-full flex-shrink-1 flex-grow bg-transparent'>
         {images.map((image: string) => (
           <Tab.Panel
+            unmount={false}
             key={image}
-            className='relative h-full w-full min-h-[600px]'
+            className='relative h-full w-full min-h-[600px] shadow-lg bg-transparent rounded-lg  bg-slate-50'
           >
             <CustomImage
               src={image}

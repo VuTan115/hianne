@@ -5,8 +5,7 @@ const nextConfig = {
   poweredByHeader: false,
   optimizeFonts: true,
   images: {
-    // unoptimized: process.env.NODE_ENV === 'development',
-    unoptimized: true,
+    unoptimized: process.env.NODE_ENV === 'development',
     remotePatterns: [
       {
         protocol: 'https',
@@ -51,4 +50,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig
+module.exports = nextConfig;

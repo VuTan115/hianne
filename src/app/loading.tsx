@@ -1,7 +1,7 @@
-import React from 'react';
+import DefaultPageLoading from '@/components/loading';
 
 const loading = () => {
-  return <div>loading</div>;
+  return <DefaultPageLoading />;
 };
 
 export default loading;

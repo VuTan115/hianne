@@ -35,8 +35,6 @@ const Product = async ({ params, searchParams }: Props) => {
     searchParams.category
   );
 
-
-
   if (!product) return notFound()
   return (
     <div className='bg-white'>
@@ -71,9 +69,9 @@ const Product = async ({ params, searchParams }: Props) => {
               <h3 className='sr-only'>Reviews</h3>
               <div className='flex items-center'>
                 <div className='flex items-center'>
-                  {[0, 1, 2, 3, 4].map((rating) => (
+                  {[0, 1, 2, 3, 4].map((rating, idx) => (
                     <StarIcon
-                      key={rating}
+                      key={`${rating}-${idx}`}
                       className={cn(
                         6 > rating ? 'text-indigo-500' : 'text-gray-300',
                         'h-5 w-5 flex-shrink-0'
