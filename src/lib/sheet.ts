@@ -61,7 +61,7 @@ export const getSheetData = cache(async (sheetName: string, range?: string) => {
 });
 
 // Find a row by slug in a specific sheet
-export const findRowBySlug = async (slug: string, sheetName: string) => {
+export const findRowBySlug = cache(async (slug: string, sheetName: string) => {
   try {
     const data = await getSheetData(sheetName);
     return data.find((item: { slug: string }) => item.slug === slug);
@@ -69,7 +69,7 @@ export const findRowBySlug = async (slug: string, sheetName: string) => {
     console.error('Error finding row by slug:', error);
     return undefined;
   }
-};
+});
 
 // Fetch all data from all sheets
 export const getAllData = cache(async () => {

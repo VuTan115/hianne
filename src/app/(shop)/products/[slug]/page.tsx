@@ -7,25 +7,29 @@ import AddToCart from '../components/add-to-cart';
 import ProductAttrPicker from '../components/product-attr-picker';
 import ProductImages from '../components/product-images';
 import Reviews from '../components/reviews';
-export const revalidate = 1;
+export const revalidate = 10;
 type Props = {
   params: { slug: string };
-  searchParams: { category: string }
+  searchParams: { category: string };
 };
 const sheetsName = [
   { name: 'Son', sheetId: 'lipstick' },
   { name: 'Phấn', sheetId: 'phan' },
-  { name: 'Kẻ', sheetId: 'ke' }
+  { name: 'Kẻ', sheetId: 'ke' },
 ];
 export async function generateStaticParams() {
-  const allProducts = (await Promise.allSettled(sheetsName.map((item) => getSheetData(item.sheetId)))).map((item, idx) => {
+  const allProducts = (
+    await Promise.allSettled(
+      sheetsName.map((item) => getSheetData(item.sheetId))
+    )
+  ).map((item, idx) => {
     if (item.status === 'fulfilled') {
-      return ({ ...sheetsName[idx], value: item.value })
+      return { ...sheetsName[idx], value: item.value };
     }
-    return []
-  }) as [{ name: string, sheetId: string, value: Product[] }]
+    return [];
+  }) as [{ name: string; sheetId: string; value: Product[] }];
   return allProducts.reduce((acc, cur) => {
-    return [...acc, ...cur.value.map(prod => ({ slug: prod.slug }))];
+    return [...acc, ...cur.value.map((prod) => ({ slug: prod.slug }))];
   }, [] as { slug: string }[]);
 }
 
@@ -35,7 +39,7 @@ const Product = async ({ params, searchParams }: Props) => {
     searchParams.category
   );
 
-  if (!product) return notFound()
+  if (!product) return notFound();
   return (
     <div className='bg-white'>
       <div className='mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8'>
@@ -95,7 +99,11 @@ const Product = async ({ params, searchParams }: Props) => {
                 {product.description}
               </pre>
             </div>
-            <ProductAttrPicker colorCodes={product.colorCodes.split(',').map(item => ({ name: item, inStock: true }))} />
+            <ProductAttrPicker
+              colorCodes={product.colorCodes
+                .split(',')
+                .map((item) => ({ name: item, inStock: true }))}
+            />
             <AddToCart product={product} />
 
             <section aria-labelledby='details-heading' className='mt-12'>
@@ -149,11 +157,9 @@ const Product = async ({ params, searchParams }: Props) => {
                 ))} */}
               </div>
             </section>
-
           </div>
         </div>
         <Reviews />
-
       </div>
     </div>
   );

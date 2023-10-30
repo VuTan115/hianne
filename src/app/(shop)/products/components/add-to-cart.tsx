@@ -3,13 +3,14 @@ import { ToastAction } from "@/components/ui/toast"
 import { useToast } from "@/components/ui/use-toast"
 import useCart from '@/hooks/use-cart';
 import { Product } from '@/interfaces/product';
+import useCartStore from '@/store/cart';
 import { HeartIcon } from '@radix-ui/react-icons';
 import { useSearchParams, useRouter } from 'next/navigation';
 const AddToCart = ({ product }: { product: Product }) => {
   const params = useSearchParams();
   const { toast } = useToast();
   const router = useRouter();
-  const { addToCart } = useCart();
+  const { addToCart } = useCartStore();
   const handleAddToCart = () => {
     const selectedCode = params.get('code') || product.colorCodes.split(',')[0];
     const quantity = parseInt(params.get('quantity')!) || 1;

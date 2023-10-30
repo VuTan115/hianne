@@ -4,7 +4,6 @@ import ProductQuantity from '@/app/(shop)/products/components/product-quantity';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import useCart, { CartItem } from '@/hooks/use-cart';
 
 import {
   AlertDialog,
@@ -17,25 +16,16 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import useCartStore from '@/store/cart';
 import { currencyFormatter } from '@/utils/number-formater';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 import FullWidthButton from './full-width-button';
 export function Cart() {
   const [open, setOpen] = useState(false);
-  const {
-    cart,
-    calculateTotalPrice,
-    removeFromCart,
-    clearCart,
-    updateCartItem,
-  } = useCart();
-  const handleMinusItem = (val: number, cartItem: CartItem) => {
-    updateCartItem(cartItem.code, { quantity: val });
-  };
-  const handlePlusItem = (val: number, cartItem: CartItem) => {
-    updateCartItem(cartItem.code, { quantity: val });
-  };
+  const { cart, removeFromCart, clearCart, updateCart } = useCartStore();
+
   return (
     <div>
       <Sheet open={open} onOpenChange={setOpen}>
@@ -71,7 +61,7 @@ export function Cart() {
               ></path>
             </svg>
             <span className='text-white text-xs text-[11px] bg-red-400 rounded-full absolute top-0 right-0 h-[17px] w-[17px]'>
-              {cart.length}
+              {cart.items.length}
             </span>
           </Button>
         </SheetTrigger>
@@ -86,7 +76,7 @@ export function Cart() {
               className='divide-y divide-gray-100 overflow-x-visible'
             >
               {cart &&
-                cart.map((item) => (
+                cart.items.map((item) => (
                   <li
                     key={item.code}
                     className='flex justify-between gap-x-4 py-5 group relative transition-all duration-150'
@@ -118,10 +108,15 @@ export function Cart() {
                       <ProductQuantity
                         quantity={item.quantity}
                         onMinus={(val) => {
-                          handleMinusItem(val, item);
+                          console.log(val);
+                          updateCart(item.code, {
+                            quantity: item.quantity - 1,
+                          });
                         }}
                         onPlus={(val) => {
-                          handlePlusItem(val, item);
+                          updateCart(item.code, {
+                            quantity: item.quantity + 1,
+                          });
                         }}
                       />
                     </div>
@@ -142,8 +137,8 @@ export function Cart() {
                         <path
                           d='M5.5 1C5.22386 1 5 1.22386 5 1.5C5 1.77614 5.22386 2 5.5 2H9.5C9.77614 2 10 1.77614 10 1.5C10 1.22386 9.77614 1 9.5 1H5.5ZM3 3.5C3 3.22386 3.22386 3 3.5 3H5H10H11.5C11.7761 3 12 3.22386 12 3.5C12 3.77614 11.7761 4 11.5 4H11V12C11 12.5523 10.5523 13 10 13H5C4.44772 13 4 12.5523 4 12V4L3.5 4C3.22386 4 3 3.77614 3 3.5ZM5 4H10V12H5V4Z'
                           fill='currentColor'
-                          fill-rule='evenodd'
-                          clip-rule='evenodd'
+                          fillRule='evenodd'
+                          clipRule='evenodd'
                         ></path>
                       </svg>
                     </Button>
@@ -154,7 +149,7 @@ export function Cart() {
 
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button variant='outline' disabled={cart.length < 1}>
+              <Button variant='outline' disabled={cart.items.length < 1}>
                 Xóa tất cả
               </Button>
             </AlertDialogTrigger>
@@ -173,6 +168,7 @@ export function Cart() {
                   onClick={() => {
                     clearCart();
                   }}
+                  className='text-white bg-red-600  hover:bg-red-700'
                 >
                   Xóa
                 </AlertDialogAction>
@@ -183,11 +179,15 @@ export function Cart() {
           <div className='flex justify-between items-center'>
             <span>Tổng cộng:</span>
             <span className='font-bold text-xl text-black'>
-              {currencyFormatter.format(calculateTotalPrice())}
+              {currencyFormatter.format(cart.total ?? 0)}
             </span>
           </div>
-          <FullWidthButton type='button'>
-            {cart.length < 1 ? 'Thêm sản phẩm' : 'Đặt hàng'}
+          <FullWidthButton type='button' onClick={() => setOpen(false)}>
+            {cart.items.length < 1 ? (
+              'Thêm sản phẩm'
+            ) : (
+              <Link href={'/cart'}>Đặt hàng</Link>
+            )}
           </FullWidthButton>
         </SheetContent>
       </Sheet>

@@ -1,7 +1,5 @@
 import { convertVndStringToNumber } from '@/utils/number-formater';
 import useLocalStorage from './use-local-storage';
-import { useState } from 'react';
-
 export interface CartItem {
   id: number;
   quantity: number;
@@ -21,7 +19,7 @@ const useCart = (): {
   updateCartItem: (code: string, value: Partial<CartItem>) => void;
 } => {
   const [cart, setCart] = useLocalStorage<CartItem[]>('cart', []);
-  // const [cart, setCart] = useState<CartItem[]>([]);
+  // const [cart, setCart] = useState<CartItem[]>(getLocalStorageCart);
   const addToCart = (item: CartItem): void => {
     const exitedItem = cart.find(
       (it) => it.id === item.id && it.code === item.code

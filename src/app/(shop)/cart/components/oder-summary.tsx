@@ -1,14 +1,26 @@
 'use client';
 import FullWidthButton from '@/components/full-width-button';
-import useCart from '@/hooks/use-cart';
+import DefaultPageLoading from '@/components/loading';
+import useCartStore from '@/store/cart';
 import { currencyFormatter } from '@/utils/number-formater';
 import { TrashIcon } from '@radix-ui/react-icons';
 import Image from 'next/image';
 import ProductQuantity from '../../products/components/product-quantity';
+import EmptyCart from '@/components/empty-cart';
 
 const OrderSumary = () => {
-  const { cart, removeFromCart, calculateTotalPrice, updateCartItem } =
-    useCart();
+  const { cart, removeFromCart, updateCart } = useCartStore();
+  if (typeof window === 'undefined')
+    return (
+      <div className='relative'>
+        <DefaultPageLoading />
+      </div>
+    );
+
+  if (cart.items.length === 0) return <EmptyCart />;
+  const totalItemsPrice = cart.total;
+  const shippingFee = 15000;
+  const taxFee = totalItemsPrice / 100;
   return (
     <>
       <div className='mt-10 lg:mt-0'>
@@ -18,9 +30,9 @@ const OrderSumary = () => {
           <h3 className='sr-only'>Items in your cart</h3>
           <ul
             role='list'
-            className='divide-y divide-gray-200 max-h-[400px] overflow-auto'
+            className='divide-y divide-gray-200 max-h-[400px] min-h-[200px] overflow-auto'
           >
-            {cart.map((product) => (
+            {cart.items.map((product) => (
               <li key={product.id} className='flex px-4 py-6 sm:px-6'>
                 <div className='flex-shrink-0 w-20 relative'>
                   <Image
@@ -67,16 +79,16 @@ const OrderSumary = () => {
                     <div className='ml-4'>
                       <ProductQuantity
                         quantity={product.quantity}
-                        onMinus={() =>
-                          updateCartItem(product.code, {
+                        onMinus={() => {
+                          updateCart(product.code, {
                             quantity: product.quantity - 1,
-                          })
-                        }
-                        onPlus={() =>
-                          updateCartItem(product.code, {
+                          });
+                        }}
+                        onPlus={() => {
+                          updateCart(product.code, {
                             quantity: product.quantity + 1,
-                          })
-                        }
+                          });
+                        }}
                       />
                     </div>
                   </div>
@@ -88,20 +100,28 @@ const OrderSumary = () => {
             <div className='flex items-center justify-between'>
               <dt className='text-sm'>Tiền hàng</dt>
               <dd className='text-sm font-medium text-gray-900'>
-                {currencyFormatter.format(calculateTotalPrice())}
+                {currencyFormatter.format(cart.total)}
               </dd>
             </div>
             <div className='flex items-center justify-between'>
               <dt className='text-sm'>Phí ship</dt>
-              <dd className='text-sm font-medium text-gray-900'>$5.00</dd>
+              <dd className='text-sm font-medium text-gray-900'>
+                {currencyFormatter.format(shippingFee)}
+              </dd>
             </div>
             <div className='flex items-center justify-between'>
               <dt className='text-sm'>Thuế</dt>
-              <dd className='text-sm font-medium text-gray-900'>$5.52</dd>
+              <dd className='text-sm font-medium text-gray-900'>
+                {currencyFormatter.format(taxFee)}
+              </dd>
             </div>
             <div className='flex items-center justify-between border-t border-gray-200 pt-6'>
               <dt className='text-base font-medium'>Tổng</dt>
-              <dd className='text-base font-medium text-gray-900'>$75.52</dd>
+              <dd className='text-base font-medium text-gray-900'>
+                {currencyFormatter.format(
+                  Math.round(totalItemsPrice + shippingFee + taxFee)
+                )}
+              </dd>
             </div>
           </dl>
 
