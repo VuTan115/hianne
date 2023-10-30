@@ -77,7 +77,7 @@ const Product = async ({ params, searchParams }: Props) => {
                     <StarIcon
                       key={`${rating}-${idx}`}
                       className={cn(
-                        6 > rating ? 'text-indigo-500' : 'text-gray-300',
+                        6 > rating ? 'text-pink-500' : 'text-gray-300',
                         'h-5 w-5 flex-shrink-0'
                       )}
                       aria-hidden='true'
@@ -120,7 +120,7 @@ const Product = async ({ params, searchParams }: Props) => {
                           <Disclosure.Button className='group relative flex w-full items-center justify-between py-6 text-left'>
                             <span
                               className={cn(
-                                open ? 'text-indigo-600' : 'text-gray-900',
+                                open ? 'text-pink-600' : 'text-gray-900',
                                 'text-sm font-medium'
                               )}
                             >
@@ -129,7 +129,7 @@ const Product = async ({ params, searchParams }: Props) => {
                             <span className='ml-6 flex items-center'>
                               {open ? (
                                 <MinusIcon
-                                  className='block h-6 w-6 text-indigo-400 group-hover:text-indigo-500'
+                                  className='block h-6 w-6 text-pink-400 group-hover:text-pink-500'
                                   aria-hidden='true'
                                 />
                               ) : (

@@ -32,10 +32,18 @@ const paymentMethods = [
   },
 ];
 const formSchema = z.object({
-  email: z.string().email('Địa chỉ email không hợp lệ'),
+  email: z.string().optional(),
   name: z.string().min(2, 'Tên phải có ít nhất 2 ký tự'),
   address: z.string().min(5, 'Địa chỉ phải có ít nhất 5 ký tự'),
-  phone: z.string().min(10, 'Số điện thoại không hợp lệ'),
+  phone: z
+    .string()
+    .min(10, 'Số điện phải có ít nhất 10 chữ số')
+    .regex(
+      /(\+84|0)[3|5|7|8|9|12|16|18|19]([0-9]{8})\b/,
+      'Số điện thoại không hợp lệ'
+    ),
+  province: z.string().min(1, 'Vui lòng chọn tỉnh/tp'),
+  district: z.string().min(1, 'Vui lòng chọn quận/huyện'),
   deliveryMethod: z.number(),
   paymentMethod: z.number(),
 });
@@ -56,10 +64,8 @@ export default function UserInfoForm() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData);
     try {
       formSchema.parse(formData);
-      console.log('Form data is valid:', formData);
       setFormErrors({});
     } catch (error) {
       if (error instanceof ZodError) {
@@ -75,6 +81,7 @@ export default function UserInfoForm() {
   };
   return (
     <form
+      id='user-info-form'
       className='space-y-5'
       onSubmit={handleSubmit}
       onChange={(e) => {
@@ -102,7 +109,7 @@ export default function UserInfoForm() {
           id='email'
           name='email'
           autoComplete='email'
-          label='Địa chỉ email'
+          label='Địa chỉ email * (không bắt buộc)'
         />
       </div>
       {formErrors.email && (
@@ -125,7 +132,25 @@ export default function UserInfoForm() {
               <p className='text-sm text-red-500 !mt-0'>{formErrors.name}</p>
             )}
           </div>
+          <div className='sm:col-span-2'>
+            <Input
+              type='number'
+              id='phone'
+              name='phone'
+              autoComplete='tel'
+              label='Số điện thoại'
+            />
+            {formErrors.phone && (
+              <p className='text-sm text-red-500 !mt-0'>{formErrors.phone}</p>
+            )}
+          </div>
           <VietNameProvinceSelector />
+          {formErrors.province && (
+            <p className='text-sm text-red-500 !mt-0'>{formErrors.province}</p>
+          )}
+          {formErrors.district && (
+            <p className='text-sm text-red-500 !mt-0'>{formErrors.district}</p>
+          )}
           <div className='sm:col-span-2'>
             <Input
               type='text'
@@ -136,18 +161,6 @@ export default function UserInfoForm() {
             />
             {formErrors.address && (
               <p className='text-sm text-red-500 !mt-0'>{formErrors.address}</p>
-            )}
-          </div>
-          <div className='sm:col-span-2'>
-            <Input
-              type='text'
-              id='phone'
-              name='phone'
-              autoComplete='tel'
-              label='Số điện thoại'
-            />
-            {formErrors.phone && (
-              <p className='text-sm text-red-500 !mt-0'>{formErrors.phone}</p>
             )}
           </div>
         </div>
@@ -205,7 +218,6 @@ export default function UserInfoForm() {
             {formErrors.paymentMethod}
           </p>
         )}
-        <button type='submit'>sumbit</button>
       </div>
     </form>
   );
@@ -236,7 +248,7 @@ const RadioOption = ({ opt }: { opt: (typeof deliveryMethods)[0] }) => (
     className={({ checked, active }) =>
       cn(
         checked ? 'border-transparent' : 'border-gray-300',
-        active ? 'ring-2 ring-indigo-500' : '',
+        active ? 'ring-2 ring-pink-500' : '',
         'relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm focus:outline-none'
       )
     }
@@ -267,14 +279,14 @@ const RadioOption = ({ opt }: { opt: (typeof deliveryMethods)[0] }) => (
         </span>
         {checked ? (
           <CheckCircleIcon
-            className='h-5 w-5 text-indigo-600'
+            className='h-5 w-5 text-pink-600'
             aria-hidden='true'
           />
         ) : null}
         <span
           className={cn(
             active ? 'border' : 'border-2',
-            checked ? 'border-indigo-500' : 'border-transparent',
+            checked ? 'border-pink-500' : 'border-transparent',
             'pointer-events-none absolute -inset-px rounded-lg'
           )}
           aria-hidden='true'

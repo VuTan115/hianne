@@ -1,12 +1,20 @@
 'use client';
+import EmptyCart from '@/components/empty-cart';
 import FullWidthButton from '@/components/full-width-button';
 import DefaultPageLoading from '@/components/loading';
+import { appendDataToMergedCells } from '@/lib/sheet';
 import useCartStore from '@/store/cart';
 import { currencyFormatter } from '@/utils/number-formater';
 import { TrashIcon } from '@radix-ui/react-icons';
 import Image from 'next/image';
 import ProductQuantity from '../../products/components/product-quantity';
-import EmptyCart from '@/components/empty-cart';
+const convertJsonToSheet = (data: any[]) => {
+  const result = [
+    Object.keys(data[0]),
+    ...data.map((o: any) => Object.keys(o).map((k) => o[k])),
+  ];
+  return result;
+};
 
 const OrderSumary = () => {
   const { cart, removeFromCart, updateCart } = useCartStore();
@@ -21,10 +29,36 @@ const OrderSumary = () => {
   const totalItemsPrice = cart.total;
   const shippingFee = 15000;
   const taxFee = totalItemsPrice / 100;
+  const handleOrderConfirm = () => {
+    if (typeof window !== 'undefined') {
+      console.log('Xác nhận đặt hàng');
+      const formRef = document.getElementById(
+        'user-info-form'
+      ) as HTMLFormElement;
+      const formData = new FormData(formRef);
+
+      const formValues: Record<string, any> = {};
+      formData.forEach((value, key) => {
+        formValues[key] = value;
+      });
+
+      // const userKeyData = convertJsonToSheet([formValues])[0];
+      const userRowsData = convertJsonToSheet([formValues])[1];
+      // const productKeyData = convertJsonToSheet(cart.items)[0];
+      const productRowsData = convertJsonToSheet(cart.items).slice(1);
+      console.log(productRowsData.map((item) => userRowsData.concat(item)));
+      appendDataToMergedCells(
+        'order',
+        // [userKeyData.concat(productKeyData)]
+        productRowsData.map((item) => userRowsData.concat(item))
+      );
+      formRef.requestSubmit();
+    }
+  };
   return (
     <>
       <div className='mt-10 lg:mt-0'>
-        <h2 className='text-lg font-medium text-gray-900'>Order summary</h2>
+        <h2 className='text-lg font-medium text-gray-900'>Chi tiết đơn hàng</h2>
 
         <div className='mt-4 rounded-lg border border-gray-200 bg-white shadow-sm'>
           <h3 className='sr-only'>Items in your cart</h3>
@@ -32,8 +66,11 @@ const OrderSumary = () => {
             role='list'
             className='divide-y divide-gray-200 max-h-[400px] min-h-[200px] overflow-auto'
           >
-            {cart.items.map((product) => (
-              <li key={product.id} className='flex px-4 py-6 sm:px-6'>
+            {cart.items.map((product, idx) => (
+              <li
+                key={`${product.code}-${idx}`}
+                className='flex px-4 py-6 sm:px-6'
+              >
                 <div className='flex-shrink-0 w-20 relative'>
                   <Image
                     src={product.thumbnail}
@@ -126,7 +163,9 @@ const OrderSumary = () => {
           </dl>
 
           <div className='border-t border-gray-200 px-4 py-6 sm:px-6'>
-            <FullWidthButton type='submit'>Xác nhận đơn hàng</FullWidthButton>
+            <FullWidthButton onClick={handleOrderConfirm}>
+              Xác nhận đơn hàng
+            </FullWidthButton>
           </div>
         </div>
       </div>

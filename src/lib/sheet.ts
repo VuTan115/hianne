@@ -1,8 +1,9 @@
+'use server';
 import { google, sheets_v4 } from 'googleapis';
 import { cache } from 'react';
 
 // Constants
-const target = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
+const target = ['https://www.googleapis.com/auth/spreadsheets'];
 
 // Initialize Google Sheets API
 const jwt = new google.auth.JWT(
@@ -30,6 +31,13 @@ const convertToJSON = (data: any[]) => {
   return jsonData;
 };
 
+const convertJsonToSheet = (data: any[]) => {
+  const result = [
+    Object.keys(data[0]),
+    ...data.map((o: any) => Object.keys(o).map((k) => o[k])),
+  ];
+  return result;
+};
 
 // Fetch a list of sheets from the spreadsheet
 export const getSheets = cache(async () => {
@@ -98,3 +106,72 @@ export const getAllData = cache(async () => {
     return [];
   }
 });
+
+// write in a sheet
+export const appendSheetData = async (
+  sheetName: string,
+  data: any[],
+  range?: string
+) => {
+  return await googleSheet.spreadsheets.values.append({
+    auth: jwt,
+    spreadsheetId: process.env.SPREADSHEET_ID,
+    range: range ? `${sheetName}!${range}` : sheetName,
+    valueInputOption: 'RAW',
+    requestBody: { values: data },
+  });
+};
+
+export const appendDataToMergedCells = async (
+  sheetName: string,
+  data: any[]
+) => {
+  try {
+    // Step 1: Append the data to the unmerged cells
+    const response = await appendSheetData(sheetName, data);
+
+    if (data.length < 2) return;
+
+    const updatedRange = response.data.updates?.updatedRange;
+    const lastIndex = parseInt(
+      String(updatedRange?.split(':')[0])
+        .match(/([A-Z]+\d+)$/)?.[0]
+        ?.slice(1) ?? '0',
+      10
+    );
+
+    const startPosition = lastIndex === data.length ? 0 : lastIndex - 1;
+    const endPosition =
+      lastIndex === data.length ? data.length : data.length + lastIndex - 1;
+
+    console.log(`writing ${data.length} product :`, startPosition, endPosition);
+    // Step 2: Merge cells for each row in the data
+    for (let i = startPosition; i < endPosition; i++) {
+      await googleSheet.spreadsheets.batchUpdate({
+        auth: jwt,
+        spreadsheetId: process.env.SPREADSHEET_ID,
+        requestBody: {
+          requests: [
+            {
+              mergeCells: {
+                range: {
+                  sheetId: 1928321420,
+                  startRowIndex: i,
+                  endRowIndex: endPosition,
+                  startColumnIndex: 0,
+                  endColumnIndex: 8,
+                },
+                mergeType: 'MERGE_COLUMNS',
+              },
+            },
+          ],
+        },
+      });
+    }
+
+    return response.data;
+  } catch (error) {
+    // console.error('Error appending data to merged cells:', error);
+    return [];
+  }
+};

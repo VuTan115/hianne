@@ -1,4 +1,5 @@
 // cartStore.ts
+'use client';
 import { convertVndStringToNumber } from '@/utils/number-formater';
 import { create } from 'zustand';
 interface CartStore {
@@ -20,14 +21,16 @@ interface CartItem {
 }
 
 const initCartFromLocalStorage = (): { items: CartItem[]; total: number } => {
+  if (typeof window === 'undefined') return { items: [], total: 0 };
   try {
     return (
-      JSON.parse(localStorage.getItem('cart') || 'null') || {
+      JSON.parse(window.localStorage.getItem('cart') || 'null') || {
         items: [],
         total: 0,
       }
     );
   } catch (error) {
+    window.localStorage.removeItem('cart');
     return { items: [], total: 0 };
   }
 };
@@ -36,7 +39,7 @@ const updateLocalStorageAndReturn = (newCart: {
   items: CartItem[];
   total: number;
 }) => {
-  localStorage.setItem('cart', JSON.stringify(newCart));
+  window.localStorage.setItem('cart', JSON.stringify(newCart));
   return { cart: newCart };
 };
 
@@ -69,6 +72,7 @@ const useCartStore = create<CartStore>((set) => ({
         0
       );
       const newCart = { items: updatedCart, total };
+
       return updateLocalStorageAndReturn(newCart);
     }),
   updateCart: (itemCode: string, cartValue: Partial<CartItem>) =>

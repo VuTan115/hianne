@@ -1,6 +1,7 @@
 'use client'
-import { ToastAction } from "@/components/ui/toast"
-import { useToast } from "@/components/ui/use-toast"
+import FullWidthButton from '@/components/full-width-button';
+import { ToastAction } from '@/components/ui/toast';
+import { useToast } from '@/components/ui/use-toast';
 import useCart from '@/hooks/use-cart';
 import { Product } from '@/interfaces/product';
 import useCartStore from '@/store/cart';
@@ -40,13 +41,9 @@ const AddToCart = ({ product }: { product: Product }) => {
   return (
     <div className='mt-6'>
       <div className='sm:flex-col1 mt-10 flex'>
-        <button
-          onClick={handleAddToCart}
-          type='button'
-          className='flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full'
-        >
+        <FullWidthButton onClick={handleAddToCart} type='button'>
           Thêm vào giỏ hàng
-        </button>
+        </FullWidthButton>
 
         <button
           type='button'

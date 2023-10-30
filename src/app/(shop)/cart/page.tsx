@@ -1,7 +1,6 @@
-import VietNameProvinceSelector from '@/components/vietnam-province-selector';
 import OrderSumary from './components/oder-summary';
 import UserInfoForm from './components/user-info-form';
-const page = () => {
+const page = async () => {
   return (
     <>
       <section className='mx-auto  w-full px-4 pb-5 rounded-b-md pt-16 sm:px-6 lg:px-8 bg-gray-50 max-w-7xl '>

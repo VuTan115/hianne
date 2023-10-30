@@ -76,9 +76,9 @@ export function Cart() {
               className='divide-y divide-gray-100 overflow-x-visible'
             >
               {cart &&
-                cart.items.map((item) => (
+                cart.items.map((item, idx) => (
                   <li
-                    key={item.code}
+                    key={`${item.code}-${idx}`}
                     className='flex justify-between gap-x-4 py-5 group relative transition-all duration-150'
                   >
                     <div className='flex min-w-0 gap-x-4 flex-1 '>

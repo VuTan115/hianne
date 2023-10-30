@@ -55,7 +55,7 @@ const ProductAttrPicker = ({ colorCodes }: Props) => {
         <div className='flex items-center justify-between'>
           <h3 className='text-sm font-medium text-gray-900'>Mã màu</h3>
           <Dialog>
-            <DialogTrigger className='text-sm font-medium text-indigo-600 hover:text-indigo-500'>
+            <DialogTrigger className='text-sm font-medium text-pink-600 hover:text-pink-500'>
               {' '}
               Color guide
             </DialogTrigger>
@@ -88,7 +88,7 @@ const ProductAttrPicker = ({ colorCodes }: Props) => {
                       ? 'cursor-pointer bg-white text-gray-900 shadow-sm'
                       : 'cursor-not-allowed bg-gray-50 text-gray-200',
                     selectedCode.name === code.name
-                      ? 'ring-2 ring-indigo-500'
+                      ? 'ring-2 ring-pink-500'
                       : '',
                     'group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6 select-none'
                   )
@@ -101,7 +101,7 @@ const ProductAttrPicker = ({ colorCodes }: Props) => {
                       <span
                         className={cn(
                           active ? 'border' : 'border-2',
-                          checked ? 'border-indigo-500' : 'border-transparent',
+                          checked ? 'border-pink-500' : 'border-transparent',
                           'pointer-events-none absolute -inset-px rounded-md'
                         )}
                         aria-hidden='true'
