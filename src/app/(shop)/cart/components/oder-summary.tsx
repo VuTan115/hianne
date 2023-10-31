@@ -8,6 +8,7 @@ import { currencyFormatter } from '@/utils/number-formater';
 import { TrashIcon } from '@radix-ui/react-icons';
 import Image from 'next/image';
 import ProductQuantity from '../../products/components/product-quantity';
+import spinner from '@/utils/spinner';
 const convertJsonToSheet = (data: any[]) => {
   const result = [
     Object.keys(data[0]),
@@ -47,12 +48,17 @@ const OrderSumary = () => {
       const userRowsData = convertJsonToSheet([formValues])[1];
       // const productKeyData = convertJsonToSheet(cart.items)[0];
       const productRowsData = convertJsonToSheet(cart.items).slice(1);
+      spinner.showLoading();
       await appendDataToMergedCells(
         'order',
         productRowsData.map((item) => userRowsData.concat(item))
-      ).then((result) => {
-        console.log(result);
-      });
+      )
+        .then((result) => {
+          console.log(result);
+          alert('Đặt hàng thành công');
+          window.location.href = '/order-sumary';
+        })
+        .finally(() => spinner.hideLoading());
     }
   };
   return (

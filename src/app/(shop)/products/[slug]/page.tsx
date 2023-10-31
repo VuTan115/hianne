@@ -34,7 +34,6 @@ export async function generateStaticParams() {
 }
 
 const Product = async ({ params, searchParams }: Props) => {
-  console.log(decodeURI(params.slug));
   const product: Product = await findRowBySlug(
     decodeURI(params.slug),
     searchParams.category
