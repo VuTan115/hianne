@@ -7,7 +7,7 @@ import AddToCart from '../components/add-to-cart';
 import ProductAttrPicker from '../components/product-attr-picker';
 import ProductImages from '../components/product-images';
 import Reviews from '../components/reviews';
-export const revalidate = 10;
+export const revalidate = 60;
 type Props = {
   params: { slug: string };
   searchParams: { category: string };
@@ -34,6 +34,7 @@ export async function generateStaticParams() {
 }
 
 const Product = async ({ params, searchParams }: Props) => {
+  console.log(decodeURI(params.slug));
   const product: Product = await findRowBySlug(
     decodeURI(params.slug),
     searchParams.category

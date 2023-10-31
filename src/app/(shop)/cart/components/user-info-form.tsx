@@ -31,7 +31,7 @@ const paymentMethods = [
     price: 'COD',
   },
 ];
-const formSchema = z.object({
+export const formSchema = z.object({
   email: z.string().optional(),
   name: z.string().min(2, 'Tên phải có ít nhất 2 ký tự'),
   address: z.string().min(5, 'Địa chỉ phải có ít nhất 5 ký tự'),
@@ -44,8 +44,8 @@ const formSchema = z.object({
     ),
   province: z.string().min(1, 'Vui lòng chọn tỉnh/tp'),
   district: z.string().min(1, 'Vui lòng chọn quận/huyện'),
-  deliveryMethod: z.number(),
-  paymentMethod: z.number(),
+  deliveryMethod: z.string(),
+  paymentMethod: z.string(),
 });
 
 export default function UserInfoForm() {
@@ -56,8 +56,8 @@ export default function UserInfoForm() {
     phone: '',
     province: '',
     district: '',
-    deliveryMethod: deliveryMethods[0].id,
-    paymentMethod: paymentMethods[0].id,
+    deliveryMethod: deliveryMethods[0].title,
+    paymentMethod: paymentMethods[0].title,
   });
 
   const [formErrors, setFormErrors] = useState<any>({});
@@ -122,6 +122,7 @@ export default function UserInfoForm() {
         <div className='mt-2 grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-4'>
           <div className='sm:col-span-2'>
             <Input
+              required={true}
               type='text'
               id='name'
               name='name'
@@ -134,10 +135,13 @@ export default function UserInfoForm() {
           </div>
           <div className='sm:col-span-2'>
             <Input
-              type='number'
+              type={process.env.NODE_ENV === 'development' ? 'text' : 'number'}
               id='phone'
               name='phone'
+              pattern='(0)(3|5|7|8|9|12|16|18|19)([0-9]{8})\b'
+              title='VD: 0761922xxx - Gồm 10 chữ số '
               autoComplete='tel'
+              required={true}
               label='Số điện thoại'
             />
             {formErrors.phone && (
@@ -156,6 +160,7 @@ export default function UserInfoForm() {
               type='text'
               id='address'
               name='address'
+              required={true}
               autoComplete='street-address'
               label='Địa chỉ'
             />
@@ -224,7 +229,16 @@ export default function UserInfoForm() {
 }
 
 // Reusable Input component
-const Input = ({ id, name, type, autoComplete, label }: any) => (
+const Input = ({
+  id,
+  name,
+  type,
+  autoComplete,
+  label,
+  required,
+  pattern,
+  ...res
+}: any) => (
   <div className=''>
     <label htmlFor={id} className='block text-sm font-medium text-gray-700'>
       {label}
@@ -233,8 +247,12 @@ const Input = ({ id, name, type, autoComplete, label }: any) => (
       <FullWidthInput
         type={type}
         id={id}
+        required={required}
+        pattern={pattern}
         name={name}
+        lang='vi-VN'
         autoComplete={autoComplete}
+        {...res}
       />
     </div>
   </div>
@@ -244,7 +262,7 @@ const Input = ({ id, name, type, autoComplete, label }: any) => (
 const RadioOption = ({ opt }: { opt: (typeof deliveryMethods)[0] }) => (
   <RadioGroup.Option
     key={opt.id}
-    value={opt.id}
+    value={opt.title}
     className={({ checked, active }) =>
       cn(
         checked ? 'border-transparent' : 'border-gray-300',

@@ -29,7 +29,7 @@ const OrderSumary = () => {
   const totalItemsPrice = cart.total;
   const shippingFee = 15000;
   const taxFee = totalItemsPrice / 100;
-  const handleOrderConfirm = () => {
+  const handleOrderConfirm = async () => {
     if (typeof window !== 'undefined') {
       console.log('Xác nhận đặt hàng');
       const formRef = document.getElementById(
@@ -41,18 +41,18 @@ const OrderSumary = () => {
       formData.forEach((value, key) => {
         formValues[key] = value;
       });
-
+      formRef.requestSubmit();
+      if (!formRef.checkValidity()) return;
       // const userKeyData = convertJsonToSheet([formValues])[0];
       const userRowsData = convertJsonToSheet([formValues])[1];
       // const productKeyData = convertJsonToSheet(cart.items)[0];
       const productRowsData = convertJsonToSheet(cart.items).slice(1);
-      console.log(productRowsData.map((item) => userRowsData.concat(item)));
-      appendDataToMergedCells(
+      await appendDataToMergedCells(
         'order',
-        // [userKeyData.concat(productKeyData)]
         productRowsData.map((item) => userRowsData.concat(item))
-      );
-      formRef.requestSubmit();
+      ).then((result) => {
+        console.log(result);
+      });
     }
   };
   return (
@@ -85,7 +85,7 @@ const OrderSumary = () => {
                     <div className='min-w-0 flex-1'>
                       <h4 className='text-sm'>
                         <a
-                          href={product.slug}
+                          href={`/products/${product.slug}?category=${product.category}`}
                           className='font-medium text-gray-700 hover:text-gray-800'
                         >
                           {product.name}

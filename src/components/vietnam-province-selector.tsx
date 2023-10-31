@@ -4,7 +4,7 @@ import {
   IProvinces,
   provinceService,
 } from '@/lib/province-services';
-import React, { memo, useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 const VietNameProvinceSelector: React.FC = () => {
   const [provinces, setProvinces] = useState<IProvinces[]>([]);
@@ -33,18 +33,25 @@ const VietNameProvinceSelector: React.FC = () => {
           <select
             id='province'
             name='province'
-            defaultValue='null'
+            required={true}
             autoComplete='province-name'
             className='w-full min-w-0 appearance-none rounded-md border border-gray-300 bg-white px-4 py-1 text-base text-gray-900 placeholder-gray-500 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500'
             onChange={(e) => {
-              handleSelectProvinces(parseInt(e.target.value, 10));
+              handleSelectProvinces(
+                provinces.find((item) => item.name === e.currentTarget.value)!
+                  .code
+              );
             }}
           >
-            <option value='null' disabled>
+            <option value='' disabled selected>
               -- Chọn thành phố hoặc tỉnh
             </option>
             {provinces.map((item) => (
-              <option key={item.codename} value={item.code}>
+              <option
+                key={item.codename}
+                value={item.name}
+                className={`[data=${item.code}]`}
+              >
                 {item.name}
               </option>
             ))}
@@ -63,15 +70,15 @@ const VietNameProvinceSelector: React.FC = () => {
           <select
             id='district'
             name='district'
-            defaultValue='null'
+            required={true}
             autoComplete='district-name'
             className='w-full min-w-0 appearance-none rounded-md border border-gray-300 bg-white px-4 py-1 text-base text-gray-900 placeholder-gray-500 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500'
           >
-            <option value='null' disabled>
+            <option value='' disabled selected>
               -- Chọn quận huyện
             </option>
             {districts.map((item) => (
-              <option key={item.codename} value={item.code}>
+              <option key={item.codename} value={item.name}>
                 {item.name}
               </option>
             ))}
@@ -82,4 +89,4 @@ const VietNameProvinceSelector: React.FC = () => {
   );
 };
 
-export default memo(VietNameProvinceSelector);
+export default VietNameProvinceSelector;

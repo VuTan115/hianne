@@ -18,6 +18,7 @@ interface CartItem {
   price: string;
   code: string;
   thumbnail: string;
+  category: string;
 }
 
 const initCartFromLocalStorage = (): { items: CartItem[]; total: number } => {

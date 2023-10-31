@@ -23,6 +23,7 @@ const AddToCart = ({ product }: { product: Product }) => {
       price: product.sellingPrice,
       thumbnail: product.thumbnail,
       slug: product.slug,
+      category: product.category,
     });
     toast({
       variant: 'default',

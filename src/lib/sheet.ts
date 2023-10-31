@@ -134,17 +134,17 @@ export const appendDataToMergedCells = async (
 
     const updatedRange = response.data.updates?.updatedRange;
     const lastIndex = parseInt(
-      String(updatedRange?.split(':')[0])
-        .match(/([A-Z]+\d+)$/)?.[0]
-        ?.slice(1) ?? '0',
-      10
+      updatedRange?.split(':')[0]?.replace(/\D/g, '') ?? '0'
     );
+    console.log(lastIndex);
+    const startPosition = lastIndex - 1;
+    const endPosition = data.length + lastIndex - 1;
 
-    const startPosition = lastIndex === data.length ? 0 : lastIndex - 1;
-    const endPosition =
-      lastIndex === data.length ? data.length : data.length + lastIndex - 1;
-
-    console.log(`writing ${data.length} product :`, startPosition, endPosition);
+    console.log(
+      ` ${updatedRange} writing ${data.length} product :`,
+      startPosition,
+      endPosition
+    );
     // Step 2: Merge cells for each row in the data
     for (let i = startPosition; i < endPosition; i++) {
       await googleSheet.spreadsheets.batchUpdate({
@@ -169,7 +169,7 @@ export const appendDataToMergedCells = async (
       });
     }
 
-    return response.data;
+    return response;
   } catch (error) {
     // console.error('Error appending data to merged cells:', error);
     return [];
