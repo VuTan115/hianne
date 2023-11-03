@@ -7,7 +7,24 @@ import AddToCart from '../components/add-to-cart';
 import ProductAttrPicker from '../components/product-attr-picker';
 import ProductImages from '../components/product-images';
 import Reviews from '../components/reviews';
-export const revalidate = 60;
+// export const revalidate = 60;
+// export async function generateStaticParams() {
+//   const allProducts = (
+//     await Promise.allSettled(
+//       sheetsName.map((item) => getSheetData(item.sheetId))
+//     )
+//   ).map((item, idx) => {
+//     if (item.status === 'fulfilled') {
+//       return { ...sheetsName[idx], value: item.value };
+//     }
+//     return [];
+//   }) as [{ name: string; sheetId: string; value: Product[] }];
+//   return allProducts.reduce((acc, cur) => {
+//     return [...acc, ...cur.value.map((prod) => ({ slug: prod.slug }))];
+//   }, [] as { slug: string }[]);
+// }
+export const dynamic = 'force-dynamic';
+
 type Props = {
   params: { slug: string };
   searchParams: { category: string };
@@ -17,21 +34,7 @@ const sheetsName = [
   { name: 'Phấn', sheetId: 'phan' },
   { name: 'Kẻ', sheetId: 'ke' },
 ];
-export async function generateStaticParams() {
-  const allProducts = (
-    await Promise.allSettled(
-      sheetsName.map((item) => getSheetData(item.sheetId))
-    )
-  ).map((item, idx) => {
-    if (item.status === 'fulfilled') {
-      return { ...sheetsName[idx], value: item.value };
-    }
-    return [];
-  }) as [{ name: string; sheetId: string; value: Product[] }];
-  return allProducts.reduce((acc, cur) => {
-    return [...acc, ...cur.value.map((prod) => ({ slug: prod.slug }))];
-  }, [] as { slug: string }[]);
-}
+
 
 const Product = async ({ params, searchParams }: Props) => {
   const product: Product = await findRowBySlug(
