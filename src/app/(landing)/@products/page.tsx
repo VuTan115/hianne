@@ -4,10 +4,11 @@ import Products from '../components/products';
 import Link from 'next/link';
 import { ArrowRightIcon } from '@radix-ui/react-icons';
 export const revalidate = 1;
-const sheetsName = [
+export const sheetsName = [
   { name: 'Son', sheetId: 'lipstick' },
   { name: 'Phấn', sheetId: 'phan' },
-  { name: 'Kẻ', sheetId: 'ke' }
+  { name: 'Kẻ', sheetId: 'ke' },
+  { name: 'Cọ', sheetId: 'co' },
 ];
 
 const page = async () => {

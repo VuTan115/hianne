@@ -2,17 +2,12 @@
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import { sheetsName } from '../@products/page';
 
-const sections = [
-  {
-    id: 'lipstick',
-    title: 'Son',
-    thumbnail: '/images/categories/son.svg',
-  },
-  { id: 'phan', title: 'Phấn', thumbnail: '/images/categories/ke.svg' },
-  { id: 'ke', title: 'Kẻ', thumbnail: '/images/categories/phanma.svg' },
-];
-
+const sections = sheetsName.map((item) => ({
+  id: item.sheetId,
+  title: item.name,
+}));
 export function NavBar() {
   let navBarRef = useRef<HTMLDivElement>(null);
   let [activeIndex, setActiveIndex] = useState<number>(0);
