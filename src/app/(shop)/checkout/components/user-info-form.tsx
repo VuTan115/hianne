@@ -135,7 +135,7 @@ export default function UserInfoForm() {
           </div>
           <div className='sm:col-span-2'>
             <Input
-              type={process.env.NODE_ENV === 'development' ? 'text' : 'number'}
+              type='text'
               id='phone'
               name='phone'
               pattern='(0)(3|5|7|8|9|12|16|18|19)([0-9]{8})\b'

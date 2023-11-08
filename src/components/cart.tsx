@@ -19,10 +19,11 @@ import {
 import useCartStore from '@/store/cart';
 import { currencyFormatter } from '@/utils/number-formater';
 import Image from 'next/image';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import FullWidthButton from './full-width-button';
 export function Cart() {
+  const { push } = useRouter();
   const [open, setOpen] = useState(false);
   const { cart, removeFromCart, clearCart, updateCart } = useCartStore();
 
@@ -67,7 +68,7 @@ export function Cart() {
         </SheetTrigger>
         <SheetContent
           side='right'
-          className='pr-5 pb-10 bg-white flex flex-col justify-between outline-none md:min-w-[500px]'
+          className='pr-5 pb-10 bg-white flex flex-col justify-between outline-none w-full sm:min-w-[500px]'
         >
           <span className='font-bold'>Giỏ hàng của bạn</span>
           <ScrollArea className='my-4 flex-1 pr-3 -mr-3'>
@@ -101,7 +102,7 @@ export function Cart() {
                         </p>
                       </div>
                     </div>
-                    <div className='hidden shrink-0 sm:flex sm:flex-col justify-between sm:items-end'>
+                    <div className=' shrink-0 flex flex-col justify-between items-end'>
                       <p className='text-sm leading-6 text-gray-900'>
                         {item.price}
                       </p>
@@ -122,7 +123,7 @@ export function Cart() {
                     </div>
                     <Button
                       variant='outline'
-                      className='hidden sm:block h-fit m-auto p-1'
+                      className='block h-fit m-auto p-1'
                       onClick={() => {
                         removeFromCart(item.code);
                       }}
@@ -182,12 +183,15 @@ export function Cart() {
               {currencyFormatter.format(cart.total ?? 0)}
             </span>
           </div>
-          <FullWidthButton type='button' onClick={() => setOpen(false)}>
-            {cart.items.length < 1 ? (
-              'Thêm sản phẩm'
-            ) : (
-              <Link href={'/cart'}>Đặt hàng</Link>
-            )}
+          <FullWidthButton
+            type='button'
+            onClick={() => {
+              setOpen(false);
+              cart.items.length >= 1 && push('/checkout');
+            }}
+            className='relative min-h-0'
+          >
+            {cart.items.length < 1 ? 'Thêm sản phẩm' : '  Đặt hàng'}
           </FullWidthButton>
         </SheetContent>
       </Sheet>

@@ -14,7 +14,7 @@ const ProductImages = ({ images }: Props) => {
       {/* Image selector */}
       <div className='mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none'>
         <ScrollArea>
-          <Tab.List className='grid gap-6 relative grid-flow-col p-2 pb-4'>
+          <Tab.List className='grid gap-6 relative grid-flow-col p-2 pb-4 justify-start'>
             {images.map((image: string, idx: number) => (
               <Tab
                 key={idx}

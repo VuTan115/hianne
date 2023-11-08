@@ -13,13 +13,19 @@ export default function NotFound() {
           <div className='mt-10 flex items-center justify-center gap-x-6'>
             <a
               href='/'
-              className='rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+              className='text-sm font-semibold text-gray-900 align-middle '
             >
-              Go back home
+              &larr; Quay lại trang chủ
+              <span className='sr-only'>, Quay lại trang chủ </span>
             </a>
-            <a href='#' className='text-sm font-semibold text-gray-900'>
-              Contact support <span aria-hidden='true'>&rarr;</span>
-            </a>
+            <form action=''>
+              <button
+                type='submit'
+                className='rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+              >
+                Tải lại trang
+              </button>
+            </form>
           </div>
         </div>
       </main>

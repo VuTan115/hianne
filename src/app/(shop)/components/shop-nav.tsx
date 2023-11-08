@@ -140,7 +140,7 @@ const ShopNav = () => {
                           leaveTo='opacity-0'
                         >
                           <Popover.Panel className='absolute inset-x-0 top-full bg-white text-sm text-gray-500'>
-                            <div className='mx-auto max-w-7xl px-8 relative'>
+                            <div className='mx-auto max-w-7xl px-8 relative shadow-md pb-5 rounded-b-md'>
                               <div className='grid grid-cols-4 gap-x-8 gap-y-10 py-16 min-h-[400px] mb-5'>
                                 {category.featured.map((item) => (
                                   <div
@@ -177,16 +177,6 @@ const ShopNav = () => {
                       </>
                     )}
                   </Popover>
-                ))}
-
-                {navigation.pages.map((page) => (
-                  <a
-                    key={page.name}
-                    href={page.href}
-                    className='flex items-center text-sm font-medium text-gray-700 hover:text-gray-800'
-                  >
-                    {page.name}
-                  </a>
                 ))}
               </div>
             </Popover.Group>
