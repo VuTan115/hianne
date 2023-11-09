@@ -3,7 +3,6 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { cn } from '@/lib/utils';
 import { RadioGroup } from '@headlessui/react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { startTransition, useState } from 'react';
 
 import ProductQuantity from './product-quantity';
 
@@ -14,12 +13,9 @@ const ProductAttrPicker = ({ colorCodes }: Props) => {
   const params = useSearchParams();
   const { replace } = useRouter();
   const pathname = usePathname();
-  const [selectedCode, setSelectedCode] = useState(
-    colorCodes.find((i) => i.name == params.get('code')) || colorCodes[0]
-  );
 
   function updateQueryParam(
-    paramName: string,
+    paramName: 'code' | 'quantity',
     paramValue: string | number | null
   ) {
     const params = new URLSearchParams(window.location.search);
@@ -28,35 +24,27 @@ const ProductAttrPicker = ({ colorCodes }: Props) => {
     } else {
       params.delete(paramName);
     }
-    startTransition(() => {
-      replace(`${pathname}?${params.toString()}`, { scroll: false });
-    });
+    replace(`${pathname}?${params.toString()}`, { scroll: false });
   }
 
-  function handleSelectCode(value: { name: string; inStock: boolean }) {
-    setSelectedCode(value);
-    const { name } = value;
-    updateQueryParam('code', name);
-  }
+  function handleChangeQuantity(value: number) {}
 
-  function handleChangeQuantity(value: number) {
-    updateQueryParam('quantity', value);
-  }
+  const selectCode = params.get('code') || colorCodes[0].name;
+  const quantity = params.get('quantity') || 1;
   return (
     <>
       <div className='mt-10 space-y-2 md:space-y-4'>
         <h3 className='text-sm text-gray-600'>Số lượng</h3>
         <ProductQuantity
-          quantity={Number(params.get('quantity') || 1)}
+          quantity={Number(quantity)}
           buttonClassName='h-7 w-7'
-          onPlus={handleChangeQuantity}
-          onMinus={handleChangeQuantity}
+          onPlus={(val) => updateQueryParam('quantity', val)}
+          onMinus={(val) => updateQueryParam('quantity', val)}
         />
         <div className='flex items-center justify-between'>
           <h3 className='text-sm font-medium text-gray-900'>Mã màu</h3>
           <Dialog>
             <DialogTrigger className='text-sm font-medium text-pink-600 hover:text-pink-500'>
-              {' '}
               Color guide
             </DialogTrigger>
             <DialogContent className='bg-white'>
@@ -69,8 +57,10 @@ const ProductAttrPicker = ({ colorCodes }: Props) => {
         </div>
 
         <RadioGroup
-          value={selectedCode}
-          onChange={handleSelectCode}
+          value={selectCode}
+          onChange={(val) => {
+            updateQueryParam('code', val);
+          }}
           className='mt-4'
         >
           <RadioGroup.Label className='sr-only'>
@@ -80,16 +70,14 @@ const ProductAttrPicker = ({ colorCodes }: Props) => {
             {colorCodes.map((code, idx) => (
               <RadioGroup.Option
                 key={`${code.name}-${idx}`}
-                value={code}
+                value={code.name}
                 disabled={!code.inStock}
                 className={({ active }) =>
                   cn(
                     code.inStock
                       ? 'cursor-pointer bg-white text-gray-900 shadow-sm'
                       : 'cursor-not-allowed bg-gray-50 text-gray-200',
-                    selectedCode.name === code.name
-                      ? 'ring-2 ring-pink-500'
-                      : '',
+                    selectCode === code.name ? 'ring-2 ring-pink-500' : '',
                     'group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6 select-none'
                   )
                 }

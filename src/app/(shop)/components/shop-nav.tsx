@@ -1,5 +1,5 @@
 'use client';
-import { Cart } from '@/components/cart';
+import { Cart } from '@/components/cart/cart';
 import { Notification } from '@/components/notification';
 import { cn } from '@/lib/utils';
 import { Popover, Transition } from '@headlessui/react';

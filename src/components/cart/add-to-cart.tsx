@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import FullWidthButton from '@/components/full-width-button';
 import { ToastAction } from '@/components/ui/toast';
 import { useToast } from '@/components/ui/use-toast';
@@ -32,7 +32,7 @@ const AddToCart = ({ product }: { product: Product }) => {
       action: (
         <ToastAction
           altText='Xem giỏ hàng'
-          onClick={() => router.push('/cart')}
+          onClick={() => router.push('/checkout')}
         >
           Xem giỏ hàng
         </ToastAction>
@@ -58,4 +58,4 @@ const AddToCart = ({ product }: { product: Product }) => {
   );
 };
 
-export default AddToCart
+export default AddToCart;

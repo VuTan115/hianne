@@ -283,7 +283,7 @@ const RadioOption = ({ opt }: { opt: (typeof deliveryMethods)[0] }) => (
             </RadioGroup.Label>
             <RadioGroup.Description
               as='span'
-              className='mt-1 flex items-center text-sm text-gray-500 mb-3'
+              className='mt-1 flex items-center text-sm text-gray-500 mb-3 whitespace-nowrap'
             >
               {opt.turnaround}
             </RadioGroup.Description>
@@ -297,7 +297,7 @@ const RadioOption = ({ opt }: { opt: (typeof deliveryMethods)[0] }) => (
         </span>
         {checked ? (
           <CheckCircleIcon
-            className='h-5 w-5 text-pink-600'
+            className='h-5 w-5 text-pink-600 min-w-0 absolute right-2 top-2'
             aria-hidden='true'
           />
         ) : null}

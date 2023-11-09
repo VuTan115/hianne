@@ -1,7 +1,8 @@
 'use server';
 import { google, sheets_v4 } from 'googleapis';
 import { cache } from 'react';
-
+import crypto from 'crypto';
+import { CartItem } from '@/hooks/use-cart';
 // Constants
 const target = ['https://www.googleapis.com/auth/spreadsheets'];
 
@@ -61,7 +62,7 @@ export const getSheetData = cache(async (sheetName: string, range?: string) => {
       range: range ? `${sheetName}!${range}` : sheetName,
     });
 
-    return convertToJSON(response.data.values!);
+    return convertToJSON(response.data.values || []);
   } catch (error) {
     console.error('Error fetching sheet data:', error);
     return [];
@@ -122,56 +123,58 @@ export const appendSheetData = async (
   });
 };
 
-export const appendDataToMergedCells = async (
-  sheetName: string,
-  data: any[]
-) => {
+const SHEET_ID = 445944671;
+
+export const addOrder = async (
+  userInfo: Record<string, any>,
+  orderItems: CartItem[]
+): Promise<any> => {
   try {
-    // Step 1: Append the data to the unmerged cells
-    const response = await appendSheetData(sheetName, data);
+    const orderId = `#${(crypto.randomBytes(4).readUInt32BE(0) % 100000000)
+      .toString()
+      .padStart(8, '0')}`;
 
-    if (data.length < 2) return;
+    userInfo['id'] = orderId;
+    const [userFields, userData] = convertJsonToSheet([userInfo]);
+    const [orderItemFields, ...orderItemData] = convertJsonToSheet(orderItems);
+    const data = orderItemData.map((i) => userData.concat(i));
+    // Step 2: Write data into sheet
+    await appendSheetData('order', data).then((response) => {
+      if (data.length < 2) return;
 
-    const updatedRange = response.data.updates?.updatedRange;
-    const lastIndex = parseInt(
-      updatedRange?.split(':')[0]?.replace(/\D/g, '') ?? '0'
-    );
-    console.log(lastIndex);
-    const startPosition = lastIndex - 1;
-    const endPosition = data.length + lastIndex - 1;
+      const updatedRange = response.data.updates?.updatedRange;
+      console.log(updatedRange);
+      const [start, end] =
+        updatedRange?.split(':').map((i) => parseInt(i.replace(/\D/g, ''))) ||
+        [];
 
-    console.log(
-      ` ${updatedRange} writing ${data.length} product :`,
-      startPosition,
-      endPosition
-    );
-    // Step 2: Merge cells for each row in the data
-    for (let i = startPosition; i < endPosition; i++) {
-      await googleSheet.spreadsheets.batchUpdate({
-        auth: jwt,
-        spreadsheetId: process.env.SPREADSHEET_ID,
-        requestBody: {
-          requests: [
-            {
-              mergeCells: {
-                range: {
-                  sheetId: 1928321420,
-                  startRowIndex: i,
-                  endRowIndex: endPosition,
-                  startColumnIndex: 0,
-                  endColumnIndex: 8,
-                },
-                mergeType: 'MERGE_COLUMNS',
-              },
-            },
-          ],
-        },
-      });
-    }
+      console.log(start, end);
 
-    return response;
+      // Step 2: Merge cells for each row in the data
+      // googleSheet.spreadsheets.batchUpdate({
+      //   auth: jwt,
+      //   spreadsheetId: process.env.SPREADSHEET_ID,
+      //   requestBody: {
+      //     requests: [
+      //       {
+      //         mergeCells: {
+      //           range: {
+      //             sheetId: SHEET_ID,
+      //             startRowIndex: start - 1,
+      //             endRowIndex: end,
+      //             startColumnIndex: 0,
+      //             endColumnIndex: userFields.length,
+      //           },
+      //           mergeType: 'MERGE_COLUMNS',
+      //         },
+      //       },
+      //     ],
+      //   },
+      // });
+    });
   } catch (error) {
-    // console.error('Error appending data to merged cells:', error);
-    return [];
+    // Handle errors here
+    // console.error('Error adding order:', error);
+    // throw error; // Rethrow the error to signify that the operation failed
   }
 };

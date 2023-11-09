@@ -6,10 +6,10 @@ module.exports = {
     fontFamily: true,
   },
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
+    './pages/**/*.tsx',
+    './components/**/*.tsx',
+    './app/**/*.tsx',
+    './src/**/*.tsx',
   ],
   theme: {
     fontFamily: {

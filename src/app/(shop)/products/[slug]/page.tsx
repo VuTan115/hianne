@@ -3,10 +3,10 @@ import { findRowBySlug, getSheetData } from '@/lib/sheet';
 import { cn } from '@/lib/utils';
 import { StarIcon } from '@heroicons/react/20/solid';
 import { notFound } from 'next/navigation';
-import AddToCart from '../components/add-to-cart';
 import ProductAttrPicker from '../components/product-attr-picker';
 import ProductImages from '../components/product-images';
 import Reviews from '../components/reviews';
+import AddToCart from '@/components/cart/add-to-cart';
 export const revalidate = 60;
 type Props = {
   params: { slug: string };
@@ -159,7 +159,9 @@ const Product = async ({ params, searchParams }: Props) => {
             </section>
           </div>
         </div>
-        <Reviews />
+        <div className='hidden'>
+          <Reviews />
+        </div>
       </div>
     </div>
   );

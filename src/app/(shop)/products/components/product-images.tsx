@@ -12,7 +12,7 @@ const ProductImages = ({ images }: Props) => {
   return (
     <Tab.Group as='div' className='flex flex-col-reverse'>
       {/* Image selector */}
-      <div className='mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none'>
+      <div className='mx-auto mt-6 w-full max-w-2xl block lg:max-w-none'>
         <ScrollArea>
           <Tab.List className='grid gap-6 relative grid-flow-col p-2 pb-4 justify-start'>
             {images.map((image: string, idx: number) => (
@@ -61,13 +61,13 @@ const ProductImages = ({ images }: Props) => {
           <Tab.Panel
             unmount={false}
             key={image}
-            className='relative h-full w-full min-h-[600px] shadow-lg bg-transparent rounded-lg  bg-slate-50'
+            className='relative h-full w-full min-h-[400px] md:min-h-[600px] shadow-lg bg-transparent rounded-lg  bg-slate-50'
           >
             <CustomImage
               src={image}
               fill
               alt=''
-              className='h-full w-full object-cover object-center sm:rounded-lg'
+              className='h-full w-full object-fill object-center rounded-lg'
             />
           </Tab.Panel>
         ))}

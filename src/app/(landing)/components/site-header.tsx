@@ -1,4 +1,4 @@
-import { Cart } from '@/components/cart';
+import { Cart } from '@/components/cart/cart';
 import { MobileNav } from '@/components/mobile-nav';
 import { Notification } from '@/components/notification';
 import Image from 'next/image';

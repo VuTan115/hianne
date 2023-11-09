@@ -2,20 +2,15 @@
 import EmptyCart from '@/components/empty-cart';
 import FullWidthButton from '@/components/full-width-button';
 import DefaultPageLoading from '@/components/loading';
-import { appendDataToMergedCells } from '@/lib/sheet';
+import { addOrder } from '@/lib/sheet';
 import useCartStore from '@/store/cart';
 import { currencyFormatter } from '@/utils/number-formater';
-import { TrashIcon } from '@radix-ui/react-icons';
-import Image from 'next/image';
-import ProductQuantity from '../../products/components/product-quantity';
 import spinner from '@/utils/spinner';
-const convertJsonToSheet = (data: any[]) => {
-  const result = [
-    Object.keys(data[0]),
-    ...data.map((o: any) => Object.keys(o).map((k) => o[k])),
-  ];
-  return result;
-};
+import { createUrl } from '@/utils/url-handler';
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import Image from 'next/image';
+import Link from 'next/link';
+import ProductQuantity from '../../products/components/product-quantity';
 
 const OrderSumary = () => {
   const { cart, removeFromCart, updateCart } = useCartStore();
@@ -38,21 +33,17 @@ const OrderSumary = () => {
       ) as HTMLFormElement;
       const formData = new FormData(formRef);
 
-      const formValues: Record<string, any> = {};
+      const formValues: Record<string, any> = { id: 'generate-on-server' };
       formData.forEach((value, key) => {
         formValues[key] = value;
       });
+
       formRef.requestSubmit();
       if (!formRef.checkValidity()) return;
-      // const userKeyData = convertJsonToSheet([formValues])[0];
-      const userRowsData = convertJsonToSheet([formValues])[1];
-      // const productKeyData = convertJsonToSheet(cart.items)[0];
-      const productRowsData = convertJsonToSheet(cart.items).slice(1);
+      const userRowsData = formValues;
+      const productRowsData = cart.items;
       spinner.showLoading();
-      await appendDataToMergedCells(
-        'order',
-        productRowsData.map((item) => userRowsData.concat(item))
-      )
+      await addOrder(userRowsData, productRowsData)
         .then((result) => {
           console.log(result);
           alert('Đặt hàng thành công');
@@ -72,72 +63,85 @@ const OrderSumary = () => {
             role='list'
             className='divide-y divide-gray-200 max-h-[400px] min-h-[200px] overflow-auto'
           >
-            {cart.items.map((product, idx) => (
-              <li
-                key={`${product.code}-${idx}`}
-                className='flex px-4 py-6 sm:px-6'
-              >
-                <div className='flex-shrink-0 w-20 relative'>
-                  <Image
-                    src={product.thumbnail}
-                    alt={product.name}
-                    className='rounded-md'
-                    fill
-                  />
-                </div>
-
-                <div className='ml-6 flex flex-1 flex-col'>
-                  <div className='flex'>
-                    <div className='min-w-0 flex-1'>
-                      <h4 className='text-sm'>
-                        <a
-                          href={`/products/${product.slug}?category=${product.category}`}
-                          className='font-medium text-gray-700 hover:text-gray-800'
+            <div className='flex h-full flex-col justify-between overflow-hidden p-1'>
+              <ul className='flex-grow overflow-auto py-4'>
+                {cart.items.map((item, i) => {
+                  const merchandiseSearchParams = {
+                    category: item.category,
+                  } as {
+                    [key: string]: string;
+                  };
+                  const merchandiseUrl = createUrl(
+                    `/products/${item.slug}`,
+                    new URLSearchParams(merchandiseSearchParams)
+                  );
+                  return (
+                    <li
+                      key={`${item.id}-${i}-${item.code}`}
+                      className='flex w-full flex-col'
+                    >
+                      <div className='relative flex w-full flex-row justify-between px-1 py-4'>
+                        <div className='absolute z-40 -mt-2 ml-[55px]'>
+                          <button
+                            type='button'
+                            onClick={(
+                              e: React.FormEvent<HTMLButtonElement>
+                            ) => {
+                              removeFromCart(item.code);
+                            }}
+                            aria-label='Remove cart item'
+                            className='ease flex h-[17px] w-[17px] items-center justify-center rounded-full bg-neutral-500 transition-all duration-200'
+                          >
+                            <XMarkIcon className='hover:text-accent-3 mx-[1px] h-4 w-4 text-white dark:text-black' />
+                          </button>
+                        </div>
+                        <Link
+                          href={merchandiseUrl}
+                          className='z-30 flex flex-row space-x-4'
                         >
-                          {product.name}
-                        </a>
-                      </h4>
-                      <p className='mt-1 text-sm text-gray-500'>
-                        {product.code}
-                      </p>
-                    </div>
-
-                    <div className='ml-4 flow-root flex-shrink-0'>
-                      <button
-                        type='button'
-                        onClick={() => removeFromCart(product.code)}
-                        className='-m-2.5 flex items-center justify-center bg-white p-2.5 text-gray-400 hover:text-gray-500'
-                      >
-                        <span className='sr-only'>Remove</span>
-                        <TrashIcon className='h-5 w-5' aria-hidden='true' />
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className='flex flex-1 items-end justify-between pt-2'>
-                    <p className='mt-1 text-sm font-medium text-gray-900'>
-                      {product.price}
-                    </p>
-
-                    <div className='ml-4'>
-                      <ProductQuantity
-                        quantity={product.quantity}
-                        onMinus={() => {
-                          updateCart(product.code, {
-                            quantity: product.quantity - 1,
-                          });
-                        }}
-                        onPlus={() => {
-                          updateCart(product.code, {
-                            quantity: product.quantity + 1,
-                          });
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </li>
-            ))}
+                          <div className='relative h-16 w-16 block cursor-pointer overflow-hidden rounded-md border border-neutral-300 bg-neutral-300 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:bg-neutral-800'>
+                            <Image
+                              className='h-full w-full object-cover'
+                              width={64}
+                              height={64}
+                              alt={item.name}
+                              src={item.thumbnail}
+                            />
+                          </div>
+                          <div className='flex flex-1 flex-col text-base'>
+                            <span className='leading-tight'>{item.name}</span>
+                            <p className='text-sm text-neutral-500 dark:text-neutral-400'>
+                              {item.code}
+                            </p>
+                          </div>
+                        </Link>
+                        <div className='flex h-16 flex-col justify-between'>
+                          <p className='text-sm text-neutral-500 dark:text-neutral-400'>
+                            {item.price}
+                          </p>
+                          <div className='ml-auto flex h-9 flex-row items-center '>
+                            <ProductQuantity
+                              quantity={item.quantity}
+                              onMinus={(val) => {
+                                console.log(val);
+                                updateCart(item.code, {
+                                  quantity: item.quantity - 1,
+                                });
+                              }}
+                              onPlus={(val) => {
+                                updateCart(item.code, {
+                                  quantity: item.quantity + 1,
+                                });
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
           </ul>
           <dl className='space-y-6 border-t border-gray-200 px-4 py-6 sm:px-6'>
             <div className='flex items-center justify-between'>
