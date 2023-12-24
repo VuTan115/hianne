@@ -3,6 +3,7 @@ import { getSheetData } from '@/lib/sheet';
 import Products from '../components/products';
 import Link from 'next/link';
 import { ArrowRightIcon } from '@radix-ui/react-icons';
+import { productService } from '@/services/product-service';
 export const revalidate = 1;
 export const sheetsName = [
   { name: 'Son', sheetId: 'lipstick' },
@@ -12,12 +13,19 @@ export const sheetsName = [
 ];
 
 const page = async () => {
-  const allProducts = (await Promise.allSettled(sheetsName.map((item) => getSheetData(item.sheetId)))).map((item, idx) => {
-    if (item.status === 'fulfilled') {
-      return ({ ...sheetsName[idx], value: item.value })
-    }
-    return []
-  }) as [{ name: string, sheetId: string, value: Product[] }]
+  // const allProducts = (await Promise.allSettled(sheetsName.map((item) => getSheetData(item.sheetId)))).map((item, idx) => {
+  //   if (item.status === 'fulfilled') {
+  //     return ({ ...sheetsName[idx], value: item.value })
+  //   }
+  //   return []
+  // }) as [{ name: string, sheetId: string, value: Product[] }]
+
+  const allProducts = [
+    {
+      ...sheetsName[0],
+      value: await productService.fetchProducts(),
+    },
+  ];
 
   return (
     <>
